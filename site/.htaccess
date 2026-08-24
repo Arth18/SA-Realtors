@@ -1,0 +1,15 @@
+# Belt and braces: block the data folder even if its own rules are ignored.
+RedirectMatch 404 ^/data/
+RedirectMatch 404 ^/inc/
+
+# Keep every existing .html address working now that listings are dynamic.
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteRule ^property-(.+)\.html$ property.php?p=$1 [L,QSA]
+</IfModule>
+
+<IfModule mod_headers.c>
+    Header set X-Content-Type-Options "nosniff"
+    Header set Referrer-Policy "strict-origin-when-cross-origin"
+</IfModule>

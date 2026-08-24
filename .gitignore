@@ -1,0 +1,15 @@
+# Runtime data. Lives on the server, not in the repo.
+site/data/config.php
+site/data/login-attempts.json
+site/data/properties.backup.json
+site/data/*.tmp
+
+# Raw footage and review copies. Big, and never shipped.
+review/
+incoming/
+build/hero-source.html
+
+# OS noise
+Thumbs.db
+desktop.ini
+.DS_Store

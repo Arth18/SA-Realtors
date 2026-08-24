@@ -1,0 +1,49 @@
+
+/* =========================================================
+   FULL LISTING BODY
+   The agency's own listing copy, its feature list, and the
+   specifications panel that sits beside it.
+   ========================================================= */
+.listing{
+  display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,.85fr);
+  gap:clamp(24px,4vw,64px);align-items:start;
+}
+@media (max-width:860px){.listing{grid-template-columns:1fr}}
+
+.listing__copy{max-width:68ch}
+.listing__copy h2{font-size:clamp(23px,2.4vw,36px);letter-spacing:-.02em;margin-bottom:.4em;max-width:22ch}
+.listing__sub{
+  font:500 11.5px/1.5 var(--mono);letter-spacing:.14em;text-transform:uppercase;
+  color:var(--accent-ink);margin-bottom:1.6em;
+}
+.listing__copy p{color:var(--ink-soft);font-size:clamp(16px,.4vw + 15px,17.5px)}
+.listing__copy h3{font-size:clamp(18px,1.4vw,23px);margin:1.8em 0 .7em}
+
+.listing__features{display:grid;gap:9px}
+.listing__features li{
+  position:relative;padding-left:26px;color:var(--ink-soft);font-size:15.5px;line-height:1.5;
+}
+.listing__features li::before{
+  content:"";position:absolute;left:2px;top:.52em;
+  width:9px;height:9px;border:1.6px solid var(--accent-ink);transform:rotate(45deg);
+}
+
+.listing__specs{
+  background:var(--panel);border:1px solid var(--rule);border-radius:16px;
+  padding:clamp(18px,2.2vw,28px);position:sticky;top:92px;
+}
+@media (max-width:860px){.listing__specs{position:static}}
+.listing__specs h3{font-size:clamp(17px,1.3vw,21px);margin-bottom:.9em}
+.listing__specs dl{display:grid;gap:0;margin:0;border-top:1px solid var(--rule)}
+.listing__specs div{
+  display:flex;justify-content:space-between;align-items:baseline;gap:14px;
+  padding:11px 0;border-bottom:1px solid var(--rule);
+}
+.listing__specs dt{font-size:14px;color:var(--ink-soft);flex:0 0 auto}
+.listing__specs dd{margin:0;font-weight:600;font-size:14.5px;text-align:right;color:var(--ink)}
+
+.listing__disclaimer{
+  margin:clamp(28px,4vh,48px) 0 0;padding-top:18px;
+  border-top:1px solid var(--rule);
+  font-size:13px;line-height:1.65;color:var(--ink-soft);max-width:92ch;
+}
