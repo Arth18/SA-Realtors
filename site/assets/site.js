@@ -621,17 +621,55 @@
       if (bad) { bad.focus(); return; }
       var g = function (id) { var el = document.getElementById(id); return el ? el.value.trim() : ''; };
       var subject = 'Enquiry from ' + g('f-name') + ' via ' + document.title.split('|')[0].trim();
-      var body =
-        'Name: ' + g('f-name') + '\n' +
-        'Phone: ' + g('f-phone') + '\n' +
-        'Email: ' + g('f-email') + '\n' +
-        'Looking for: ' + g('f-want') + '\n' +
-        'Page: ' + window.location.href + '\n\n' +
-        'Notes: ' + (g('f-note') || 'None') + '\n';
-      /* FORM ENDPOINT: composes a mail for now. Swap for the hosting handler at deploy. */
-      window.location.href = 'mailto:contact@sarealtors.com.au' +
-        '?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
-      if (done) done.hidden = false;
+      var key = form.getAttribute('data-access-key') || 'YOUR_ACCESS_KEY_HERE';
+      var submitBtn = form.querySelector('button[type="submit"]');
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Sending...';
+      }
+      fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify({
+          access_key: key,
+          subject: subject,
+          name: g('f-name'),
+          phone: g('f-phone'),
+          email: g('f-email'),
+          want: g('f-want'),
+          message: g('f-note') || 'None',
+          page: window.location.href
+        })
+      })
+      .then(function(res) { return res.json(); })
+      .then(function(data) {
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          submitBtn.textContent = 'Send my enquiry';
+        }
+        if (data.success) {
+          if (done) {
+            done.hidden = false;
+            var doneMsg = document.getElementById('formDoneMsg');
+            if (doneMsg) {
+              doneMsg.textContent = 'Your enquiry has been received. We will get back to you shortly!';
+            }
+          }
+          form.reset();
+        } else {
+          alert('Submission error: ' + (data.message || 'Please check your configuration.'));
+        }
+      })
+      .catch(function(err) {
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          submitBtn.textContent = 'Send my enquiry';
+        }
+        alert('Failed to send enquiry. Please check your internet connection and try again.');
+      });
     });
   })();
 

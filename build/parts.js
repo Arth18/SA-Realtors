@@ -10,7 +10,8 @@ const AGENCY = {
   email: 'contact@sarealtors.com.au',
   street: '380 Payneham Road',
   city: 'Payneham SA 5070',
-  rla: 'RLA 344822'
+  rla: 'RLA 344822',
+  web3formsKey: 'YOUR_ACCESS_KEY_HERE'
 };
 
 const AGENTS = [
@@ -45,6 +46,17 @@ const AGENTS = [
     bio: [
       'Dinesh looks after residential sales, mostly through Salisbury, Elizabeth and the suburbs around them.',
       'He handles the part most people find stressful: pricing a home honestly, getting it in front of the right buyers, and keeping you told what is happening rather than leaving you guessing.'
+    ]
+  },
+  {
+    slug: 'ankur-raithatha', name: 'Ankur Raithatha',
+    role: 'Buyers Agent',
+    phone: '0430 437 766', href: '+61430437766',
+    img: 'agent-ankur.webp',
+    focus: 'Buying side, securing residential and development sites.',
+    bio: [
+      'Ankur works on the buying side of the agency, helping clients find, analyze, and secure properties that fit their needs.',
+      'He specializes in residential and future residential sites across Adelaide, ensuring that buyers have dedicated representation and clear numbers before committing to a purchase.'
     ]
   }
 ];
@@ -117,8 +129,7 @@ function foot() {
 <footer class="foot">
   <div class="foot__in">
     <div class="foot__brand">
-      <img src="assets/lockup-light.png" alt="SA Realtors" width="220" height="50" loading="lazy">
-      <p class="foot__tag">Your land. Your future. We make it happen.</p>
+      <img src="assets/lockup.png" alt="SA Realtors" width="220" height="50" loading="lazy">
     </div>
     <div class="foot__cols">
       <div>
@@ -341,8 +352,8 @@ function enquire(o) {
       </ul>
     </div>
 
-    <!-- FORM ENDPOINT: composes a mailto for now. Swap to the hosting mail handler at deploy. -->
-    <form class="form" id="form" novalidate>
+    <!-- FORM ENDPOINT: composes a Web3Forms submission. -->
+    <form class="form" id="form" data-access-key="${AGENCY.web3formsKey}" novalidate>
       <div class="field">
         <label for="f-name">Your name</label>
         <input id="f-name" name="name" type="text" autocomplete="name" required>
