@@ -133,14 +133,12 @@ const page = (file, html) => made.push(write(file, html));
   </div>
 </section>
 
-<!-- ============ OUR TEAM, AUTO-ROTATING ============ -->
+<!-- ============ OUR TEAM, STATIC GRID ============ -->
 <section class="sec sec--team sec--tint" id="team">
   <div class="wrap">
     ${P.sectionHead('Our team', 'A small Adelaide agency where you speak to whichever of us can help.', { kicker: 'The people you deal with', centre: true })}
-    <div class="carousel js-carousel js-carousel--agents" data-min="3">
-      <div class="carousel__track">
-        ${P.AGENTS.map(P.agentCard).join('\n')}
-      </div>
+    <div class="agrid agrid--4">
+      ${P.AGENTS.map(P.agentCard).join('\n')}
     </div>
     <p class="sec__more sec__more--centre"><a class="btn btn--ghost" href="agents.html">Meet the team</a></p>
   </div>
