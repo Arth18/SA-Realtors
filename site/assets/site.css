@@ -1388,33 +1388,6 @@ body:not(.has-hero) #main{padding-top:84px}
 /* the survey boundary draws on load, then stays */
 .lot__line{stroke-dashoffset:calc(var(--len,2000) * (1 - var(--draw,0)))}
 
-/* centred logo watermark — lives in the right half of the video, clear of the settle panel */
-.hero__logo{
-  position:absolute;z-index:3;
-  /* horizontally centred in the right half; vertically centred */
-  left:50%;top:50%;
-  transform:translate(-50%,-50%);
-  display:flex;align-items:center;justify-content:center;
-  padding:18px 28px;
-  background:rgba(255,255,255,.82);
-  border:1px solid rgba(255,255,255,.6);
-  border-radius:16px;
-  backdrop-filter:blur(14px) saturate(1.2);
-  box-shadow:0 8px 32px rgba(16,28,61,.18),0 1px 0 rgba(255,255,255,.5) inset;
-  animation:heroPanelIn 1s var(--ease) .3s both;
-  pointer-events:none;
-}
-.hero__logo img{
-  width:clamp(140px,14vw,210px);height:auto;display:block;
-}
-/* hide on compact / mobile layouts and when reduced motion removes the hero */
-@media (max-width:720px),
-       (orientation:portrait) and (max-width:1024px),
-       (orientation:portrait) and (pointer:coarse),
-       (orientation:landscape) and (pointer:coarse) and (max-height:560px),
-       (prefers-reduced-motion:reduce){
-  .hero__logo{display:none}
-}
 
 
 .herotext{
