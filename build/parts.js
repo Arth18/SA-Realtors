@@ -175,7 +175,7 @@ function pageHead(o) {
   const crumbs = (o.crumbs || []).map(c =>
     c.href ? `<a href="${c.href}">${esc(c.label)}</a>` : `<span aria-current="page">${esc(c.label)}</span>`
   ).join('<i aria-hidden="true">/</i>');
-  const cls = o.centre ? ' phead--centre' : '';
+  const cls = o.centre === false ? '' : ' phead--centre';
   return `<section class="phead${cls}">
   <div class="wrap">
     <nav class="crumb" aria-label="Breadcrumb">${crumbs}</nav>
@@ -339,10 +339,7 @@ function enquire(o) {
   const heading = (o && o.title) || 'Tell us what you are looking to build.';
   const lede = (o && o.lede) || 'Fill in the form and our team will contact you shortly to discuss available opportunities.';
   return `<section class="sec sec--enquire" id="enquire">
-  <div class="enquire">
-    <svg class="enquire__lot" viewBox="0 0 600 400" preserveAspectRatio="none" aria-hidden="true">
-      <rect x="6" y="6" width="588" height="388" vector-effect="non-scaling-stroke"></rect>
-    </svg>
+  <div class="enquire enquire--form-left">
     <div class="enquire__text">
       <p class="kicker kicker--light"><span class="pegmark" aria-hidden="true"></span>Limited projects available</p>
       <h2 class="h2 h2--light">${esc(heading)}</h2>

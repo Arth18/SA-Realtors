@@ -47,24 +47,7 @@
       <video id="hero" preload="metadata" muted playsinline autoplay loop aria-hidden="true" tabindex="-1"></video>
       <div class="skylift"></div>
 
-      <!-- the survey boundary draws itself in once on load, then holds -->
-      <svg class="lot" id="lot" viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
-        <defs>
-          <mask id="lotMask" maskUnits="userSpaceOnUse">
-            <path class="drawmask" id="lotMaskPath" d="M 1300 600 L 1760 575 L 1800 745 L 1330 785 Z" fill="none" stroke="#fff" stroke-width="34" stroke-linejoin="round" stroke-linecap="round"></path>
-          </mask>
-        </defs>
-        <path class="lot__fill" d="M 1300 600 L 1760 575 L 1800 745 L 1330 785 Z"></path>
-        <path class="lot__line" id="lotLine" d="M 1300 600 L 1760 575 L 1800 745 L 1330 785 Z" mask="url(#lotMask)"></path>
-        <g class="lot__pegs" id="lotPegs">
-          <g class="peg" style="--i:0"><rect x="-9" y="-9" width="18" height="18" transform="translate(1300,600) rotate(45)"></rect><circle cx="1300" cy="600" r="3.4"></circle></g>
-          <g class="peg" style="--i:1"><rect x="-9" y="-9" width="18" height="18" transform="translate(1760,575) rotate(45)"></rect><circle cx="1760" cy="575" r="3.4"></circle></g>
-          <g class="peg" style="--i:2"><rect x="-9" y="-9" width="18" height="18" transform="translate(1800,745) rotate(45)"></rect><circle cx="1800" cy="745" r="3.4"></circle></g>
-          <g class="peg" style="--i:3"><rect x="-9" y="-9" width="18" height="18" transform="translate(1330,785) rotate(45)"></rect><circle cx="1330" cy="785" r="3.4"></circle></g>
-        </g>
-      </svg>
-
-      <p class="loadring" id="loadring" aria-hidden="true">
+<p class="loadring" id="loadring" aria-hidden="true">
         <svg viewBox="0 0 48 48"><circle cx="24" cy="24" r="20" fill="none" stroke="currentColor" stroke-width="3" stroke-dasharray="126" style="stroke-dashoffset:var(--ld,126)"></circle></svg>
       </p>
     </div>
@@ -93,9 +76,17 @@
 </section>
 
 
-<!-- ============ WHAT ARE YOU LOOKING FOR ============ -->
-<section class="sec sec--choose">
-  <div class="wrap"><div class="choose">
+<!-- ============ WHAT WE DO + WHAT ARE YOU LOOKING FOR (merged) ============ -->
+<section class="sec sec--offer" id="offer">
+  <div class="wrap">
+    <div class="shead reveal shead--centre">
+  <p class="kicker"><span class="pegmark" aria-hidden="true"></span>Limited projects available</p>
+  <div class="shead__row">
+    <h2>We help you find the land that will be yours</h2>
+    <p class="shead__note">Residential and future residential sites across Adelaide, from 250 square metres to 100 acre development projects.</p>
+  </div>
+</div>
+    <div class="choose">
   <p class="choose__lead"><span class="pegmark" aria-hidden="true"></span>Tell us what you are looking for</p>
   <div class="choose__grid"><a class="choose__card reveal" href="development-opportunities.html">
     <span class="choose__ico" aria-hidden="true"><svg viewBox="0 0 40 40"><path d="M6 30 L20 12 L34 30 Z" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linejoin="round"/><path d="M6 30 L34 30" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg></span>
@@ -115,18 +106,6 @@
     <span class="choose__note">Places to lease across the northern suburbs</span>
     <span class="choose__go" aria-hidden="true">Show me <i></i></span>
   </a></div>
-</div></div>
-</section>
-
-<!-- ============ WHAT WE DO ============ -->
-<section class="sec sec--offer" id="offer">
-  <div class="wrap">
-    <div class="shead reveal shead--centre">
-  <p class="kicker"><span class="pegmark" aria-hidden="true"></span>Limited projects available</p>
-  <div class="shead__row">
-    <h2>We help you find the land that will be yours</h2>
-    <p class="shead__note">Residential and future residential sites across Adelaide, from 250 square metres to 100 acre development projects.</p>
-  </div>
 </div>
     <ul class="badges reveal">
       <li class="badge">
@@ -182,7 +161,7 @@
   
   <div class="shead__row">
     <h2>Recently sold</h2>
-    <p class="shead__note">A sample of what we have moved lately. Every one of these was handled by the people whose numbers are on this page.</p>
+    
   </div>
 </div>
     <div class="carousel js-carousel" data-min="3" aria-live="off">
@@ -346,10 +325,7 @@
 </section>
 
 <section class="sec sec--enquire" id="enquire">
-  <div class="enquire">
-    <svg class="enquire__lot" viewBox="0 0 600 400" preserveAspectRatio="none" aria-hidden="true">
-      <rect x="6" y="6" width="588" height="388" vector-effect="non-scaling-stroke"></rect>
-    </svg>
+  <div class="enquire enquire--form-left">
     <div class="enquire__text">
       <p class="kicker kicker--light"><span class="pegmark" aria-hidden="true"></span>Limited projects available</p>
       <h2 class="h2 h2--light">Tell us what you are looking to build.</h2>

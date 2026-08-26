@@ -75,18 +75,14 @@ const page = (file, html) => made.push(write(file, html));
   /* every sold listing rotates, so the carousel is representative of the agency's work */
   const feature = sold;
   const body = `
-<!-- ============ WHAT ARE YOU LOOKING FOR ============ -->
-<section class="sec sec--choose">
-  <div class="wrap">${P.chooseType()}</div>
-</section>
-
-<!-- ============ WHAT WE DO ============ -->
+<!-- ============ WHAT WE DO + WHAT ARE YOU LOOKING FOR (merged) ============ -->
 <section class="sec sec--offer" id="offer">
   <div class="wrap">
     ${P.sectionHead(
       'We help you find the land that will be yours',
       'Residential and future residential sites across Adelaide, from 250 square metres to 100 acre development projects.',
       { kicker: 'Limited projects available', centre: true })}
+    ${P.chooseType()}
     <ul class="badges reveal">
       <li class="badge">
         <span class="badge__mark" aria-hidden="true"><svg viewBox="0 0 40 40"><path d="M7 27 L20 15 L33 27" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M11 27 v6 h18 v-6" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
@@ -123,7 +119,7 @@ const page = (file, html) => made.push(write(file, html));
 <!-- ============ RECENTLY SOLD, AUTO-ROTATING ============ -->
 <section class="sec sec--listings">
   <div class="wrap">
-    ${P.sectionHead('Recently sold', 'A sample of what we have moved lately. Every one of these was handled by the people whose numbers are on this page.', { centre: true })}
+    ${P.sectionHead('Recently sold', '', { centre: true })}
     <div class="carousel js-carousel" data-min="3" aria-live="off">
       <div class="carousel__track">
         ${feature.map(P.propertyCard).join('\n')}
@@ -250,7 +246,7 @@ page('properties.html', listingPage({
   crumbs: [{ label: 'Home', href: 'index.html' }, { label: 'Properties' }],
   kicker: 'Our listings',
   h1: 'Find your property',
-  lede: 'Filter by type or status. If nothing here fits, tell us what you are after and we will call you when it lands.',
+  lede: '',
   items: props,
   filters: true
 }));
@@ -392,25 +388,20 @@ page('development-opportunities.html',
   P.head({
     file: 'development-opportunities.html',
     title: 'Land and development sites | SA Realtors',
-    desc: 'Residential and future residential development sites across Adelaide, from 700 square metres to ten acres. SA Realtors, RLA 344822.'
+    desc: 'Residential and future residential development sites across Adelaide, from 250 square metres to 100 acres. SA Realtors, RLA 344822.'
   }) +
   P.pageHead({
     crumbs: [{ label: 'Home', href: 'index.html' }, { label: 'Land and development' }],
     kicker: 'Limited projects available',
     title: 'Are you a property developer looking for your next residential project?',
-    lede: 'We have opportunities from small residential sites at 700 square metres through to ten acre future residential projects.'
+    lede: ''
   }) +
   `<section class="sec sec--offers">
   <div class="wrap">
-    ${P.sectionHead('Sites we have handled', `${acres} acres across the northern corridor, through Munno Para, Angle Vale, Kudla and Evanston Gardens.`)}
+    ${P.sectionHead('Sites we have handled', '')}
     <div class="orows">${land.map(P.offerRow).join('\n')}</div>
   </div>
-</section>
-
-${P.enquire({
-    title: 'Tell us what you are looking to build.',
-    lede: 'Fill in the form and our team will contact you shortly to discuss available opportunities.'
-  })}` + P.foot());
+</section>` + P.foot());
 
 /* =======================================================
    AGENTS
@@ -430,8 +421,7 @@ page('agents.html',
   }) +
   `<section class="sec sec--team">
   <div class="wrap"><div class="agrid">${P.AGENTS.map(P.agentCard).join('\n')}</div></div>
-</section>
-${P.enquire({ title: 'Not sure who to call?', lede: 'Send it here and whichever of us it suits will get back to you.' })}` + P.foot());
+</section>` + P.foot());
 
 for (const a of P.AGENTS) {
   page('agent-' + a.slug + '.html',
@@ -496,7 +486,7 @@ page('about.html',
     <h3>Property management</h3>
     <p>We look after investment properties so owners don’t have to.</p>
     <p>Our property management service is focused on keeping your investment well managed, your tenants supported and the day-to-day responsibilities taken care of.</p>
-    <p>Our management fee is 5.5% including GST<a href="#tc" class="prose__note">*</a>.</p>
+    <p>Our management fee is 5.5% including GST.</p>
 
     <h3>Selling your property</h3>
     <p>When it comes time to sell, our dedicated sales agent Dinesh Sharma specialises in property sales and works closely with vendors to achieve the best possible outcome.</p>
@@ -506,11 +496,6 @@ page('about.html',
     <p>We believe good property advice starts with being upfront.</p>
     <p>We tell you about the things that can cost you money before you commit, not after, from site costs and service connections to title timing and development considerations.</p>
     <p>If a property isn’t right for your plans, we’ll say so. We’d rather lose a sale than put someone into the wrong property.</p>
-
-    <h3>The details</h3>
-    <p>${P.AGENCY.name}<br>${P.AGENCY.street}, ${P.AGENCY.city}<br>Licensed in South Australia &middot; ${P.AGENCY.rla}<br><a href="tel:${P.AGENCY.phoneHref}">${P.AGENCY.phone}</a> &middot; <a href="mailto:${P.AGENCY.email}">${P.AGENCY.email}</a></p>
-
-    <p class="prose__tc" id="tc">*Terms and conditions apply.</p>
   </div>
 </section>
 
@@ -519,9 +504,7 @@ page('about.html',
     ${P.sectionHead('The team', '', { centre: true })}
     <div class="agrid">${P.AGENTS.map(P.agentCard).join('\n')}</div>
   </div>
-</section>
-
-${P.enquire({ title: 'Come and talk to us.', lede: 'Send your details and one of us will call you back.' })}` + P.foot());
+</section>` + P.foot());
 
 /* =======================================================
    CONTACT

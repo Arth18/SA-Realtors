@@ -29,7 +29,7 @@ page('about.html',
     <h3>Property management</h3>
     <p>We look after investment properties so owners don’t have to.</p>
     <p>Our property management service is focused on keeping your investment well managed, your tenants supported and the day-to-day responsibilities taken care of.</p>
-    <p>Our management fee is 5.5% including GST<a href="#tc" class="prose__note">*</a>.</p>
+    <p>Our management fee is 5.5% including GST.</p>
 
     <h3>Selling your property</h3>
     <p>When it comes time to sell, our dedicated sales agent Dinesh Sharma specialises in property sales and works closely with vendors to achieve the best possible outcome.</p>
@@ -40,10 +40,6 @@ page('about.html',
     <p>We tell you about the things that can cost you money before you commit, not after, from site costs and service connections to title timing and development considerations.</p>
     <p>If a property isn’t right for your plans, we’ll say so. We’d rather lose a sale than put someone into the wrong property.</p>
 
-    <h3>The details</h3>
-    <p>${P.AGENCY.name}<br>${P.AGENCY.street}, ${P.AGENCY.city}<br>Licensed in South Australia &middot; ${P.AGENCY.rla}<br><a href="tel:${P.AGENCY.phoneHref}">${P.AGENCY.phone}</a> &middot; <a href="mailto:${P.AGENCY.email}">${P.AGENCY.email}</a></p>
-
-    <p class="prose__tc" id="tc">*Terms and conditions apply.</p>
   </div>
 </section>
 
@@ -53,5 +49,4 @@ page('about.html',
     <div class="agrid">${P.AGENTS.map(P.agentCard).join('\n')}</div>
   </div>
 </section>
-
-${P.enquire({ title: 'Come and talk to us.', lede: 'Send your details and one of us will call you back.' })}` + P.foot());
+` + P.foot());
