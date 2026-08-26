@@ -80,9 +80,19 @@
       revealEls.forEach(function (el) { el.classList.add('in'); });
       return;
     }
+    /* Observe with a generous top margin so elements re-hide as soon as they
+       scroll back above the viewport, allowing the entrance to replay. */
     var obs = new IntersectionObserver(function (es) {
       es.forEach(function (e) {
-        if (e.isIntersecting) { e.target.classList.add('in'); obs.unobserve(e.target); }
+        if (e.isIntersecting) {
+          e.target.classList.add('in');
+        } else {
+          /* Only reset when the element has scrolled *above* the viewport
+             (boundingClientRect.top < 0 means it exited from the top). */
+          if (e.boundingClientRect.top < 0) {
+            e.target.classList.remove('in');
+          }
+        }
       });
     }, { rootMargin: '0px 0px -10% 0px', threshold: 0.1 });
     revealEls.forEach(function (el) { obs.observe(el); });
@@ -104,6 +114,96 @@
     if (!p.getTotalLength) return;
     try { p.style.setProperty('--len', Math.ceil(p.getTotalLength())); } catch (e) { /* default */ }
   });
+
+  /* =======================================================
+     HERO SCROLL DRIVER  (home page only)
+
+     Reads scroll progress through the tall .hero section and writes
+     CSS custom properties so the panel, sub-copy and CTA can animate
+     in CSS without needing WAAPI or a scroll-timeline polyfill.
+     Also resets when the user scrolls back to the very top.
+     ======================================================= */
+  (function heroScroll() {
+    var hero  = document.querySelector('.hero');
+    var stage = document.getElementById('stage');
+    if (!hero || !stage) return;
+
+    /* Compact/portrait layouts disable the sticky scroll effect in CSS;
+       skip the JS driver on those viewports too. */
+    var isCompact = function () {
+      return DEVICE_GATES.some(function (q) { return window.matchMedia(q).matches; }) ||
+             window.matchMedia(RM_GATE).matches;
+    };
+
+    var settled = document.querySelector('.herotext .settle');
+    var sub     = document.querySelector('.herotext .settle__sub');
+    var cta     = document.querySelector('.herotext .settle__cta');
+
+    var rafId = null;
+    var lastK = -1; /* sentinel — forces first paint */
+
+    function tick() {
+      rafId = null;
+      if (isCompact()) {
+        /* On compact layout just make sure everything is fully visible */
+        if (settled) { settled.style.removeProperty('opacity'); settled.style.removeProperty('transform'); }
+        if (sub)     { sub.style.removeProperty('opacity');     sub.style.removeProperty('transform'); }
+        if (cta)     { cta.style.removeProperty('opacity');     cta.style.removeProperty('transform'); }
+        return;
+      }
+
+      var heroH  = hero.offsetHeight;          /* full tall height (260 vh) */
+      var viewH  = window.innerHeight;
+      /* scrollable distance inside the hero section (after the sticky viewport) */
+      var travel = heroH - viewH;
+      var scrollY = window.scrollY || window.pageYOffset;
+      /* raw 0..1 progress; clamped so it never over- or under-shoots */
+      var raw = travel > 0 ? clamp(scrollY / travel, 0, 1) : 0;
+
+      if (Math.abs(raw - lastK) < 0.001) return; /* no meaningful change */
+      lastK = raw;
+
+      /* --- panel slide (subtle translateX) --- */
+      /* k=0 → fully on screen, k=1 → fully scrolled through */
+      var panelX = raw * -34;   /* slides left as you scroll */
+      var panelO = clamp(1 - raw * 1.8, 0, 1);
+
+      /* sub-copy fades out a little earlier */
+      var subO = clamp(1 - raw * 2.2, 0, 1);
+      var subY = raw * 12;
+
+      /* CTA fades last */
+      var ctaO = clamp(1 - raw * 2.6, 0, 1);
+      var ctaY = raw * 12;
+
+      if (settled) {
+        settled.style.opacity   = panelO;
+        settled.style.transform = 'translateX(' + panelX.toFixed(1) + 'px)';
+      }
+      if (sub) {
+        sub.style.opacity   = subO;
+        sub.style.transform = 'translateY(' + subY.toFixed(1) + 'px)';
+      }
+      if (cta) {
+        cta.style.opacity   = ctaO;
+        cta.style.transform = 'translateY(' + ctaY.toFixed(1) + 'px)';
+      }
+    }
+
+    function onScroll() {
+      if (!rafId) rafId = requestAnimationFrame(tick);
+    }
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+    /* run once on load so the initial state is correct */
+    tick();
+
+    /* If the viewport size changes (rotate, resize) recalculate */
+    window.addEventListener('resize', function () {
+      lastK = -1;
+      onScroll();
+    }, { passive: true });
+  })();
 
   /* =======================================================
      HERO  (home page only)
