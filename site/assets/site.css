@@ -802,7 +802,7 @@ body:not(.has-hero) #main{padding-top:84px}
 @media (max-width:860px){
   .navtoggle{display:flex;order:3;margin-left:8px}
   .nav{flex-wrap:wrap}
-  .nav__brand{order:1}
+  .nav__brand{position:static;transform:none;order:1}
   .nav__cta{order:2;margin-left:auto}
   .nav__links{
     display:grid;order:4;width:100%;gap:2px;margin:0;
@@ -820,9 +820,9 @@ body:not(.has-hero) #main{padding-top:84px}
 
 /* ---------- page header ---------- */
 /* must sit above the fixed .env layer, which is opaque and paints over unpositioned content */
-.phead{position:relative;z-index:1;padding:clamp(30px,5vh,64px) var(--gut) clamp(20px,3vh,34px)}
+.phead{position:relative;z-index:1;padding:clamp(30px,5vh,64px) var(--gut) clamp(20px,3vh,34px);text-align:center}
 .crumb{
-  display:flex;flex-wrap:wrap;align-items:center;gap:.5em;margin-bottom:22px;
+  display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:.5em;margin-bottom:22px;
   font:500 12.5px/1.4 var(--mono);letter-spacing:.06em;color:var(--ink-soft);
 }
 .crumb a{text-decoration:none;color:var(--ink-soft);border-bottom:1px solid transparent;transition:border-color .3s var(--ease),color .3s var(--ease)}
@@ -830,22 +830,22 @@ body:not(.has-hero) #main{padding-top:84px}
 .crumb i{color:var(--rule-strong);font-style:normal}
 .crumb span{color:var(--ink)}
 .phead__row{
-  display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);
+  display:grid;grid-template-columns:1fr;justify-items:center;
   gap:clamp(18px,4vw,64px);align-items:center;
 }
-.phead .lede{padding-top:clamp(6px,1.4vh,18px);line-height:1.55}
-.phead h1{font-size:clamp(26px,3vw,44px);letter-spacing:-.02em;max-width:22ch;margin:0;line-height:1.15;font-weight:700}
-.phead .lede{margin:0 0 .35em}
+.phead .lede{padding-top:clamp(6px,1.4vh,18px);line-height:1.55;margin-left:auto;margin-right:auto;max-width:56ch}
+.phead h1{font-size:clamp(26px,3vw,44px);letter-spacing:-.02em;margin:0 auto;line-height:1.15;font-weight:700;max-width:22ch}
+.phead .lede{margin:0 auto .35em}
 @media (max-width:820px){.phead__row{grid-template-columns:1fr;align-items:start}}
 
 /* ---------- the reference's section header ---------- */
-.shead{margin-bottom:clamp(26px,4vh,52px)}
+.shead{margin-bottom:clamp(26px,4vh,52px);text-align:center}
 .shead__row{
-  display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);
+  display:grid;grid-template-columns:1fr;justify-items:center;
   gap:clamp(16px,4vw,60px);align-items:end;
 }
-.shead h2{font-size:clamp(26px,3.2vw,46px);letter-spacing:-.024em;max-width:18ch;margin:0}
-.shead__note{margin:0 0 .3em;color:var(--ink-soft);font-size:clamp(15.5px,.4vw + 14px,17.5px);max-width:46ch}
+.shead h2{font-size:clamp(26px,3.2vw,46px);letter-spacing:-.024em;margin:0 auto;max-width:22ch}
+.shead__note{margin:0 auto .3em;color:var(--ink-soft);font-size:clamp(15.5px,.4vw + 14px,17.5px);max-width:56ch}
 .on-dark{color:var(--on-dark)}
 .on-dark-soft{color:var(--on-dark-soft)}
 @media (max-width:820px){.shead__row{grid-template-columns:1fr;align-items:start}}

@@ -143,9 +143,16 @@
       video.src = VIDEO_URL;
       video.load();
       var canplay = function () {
-        stage.classList.add('video-ready');
         var p = video.play();
-        if (p && p.catch) p.catch(function () { /* autoplay was blocked, poster stays */ });
+        if (p && p.catch) {
+          p.then(function() {
+            stage.classList.add('video-ready');
+          }).catch(function () {
+            stage.classList.add('video-failed');
+          });
+        } else {
+          stage.classList.add('video-ready');
+        }
       };
       video.addEventListener('canplay', canplay, { once: true });
       video.addEventListener('error', function () {
@@ -248,7 +255,11 @@
       if (!originals.length) return;
 
       /* clone once so the loop can wrap invisibly */
-      originals.forEach(function (n) { track.appendChild(n.cloneNode(true)); });
+      originals.forEach(function (n) { 
+        var clone = n.cloneNode(true);
+        clone.classList.add('in'); /* ensure clones aren't hidden by .reveal */
+        track.appendChild(clone); 
+      });
 
       var measure = function () {
         var half = 0;
