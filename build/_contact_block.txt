@@ -1,0 +1,38 @@
+page('contact.html',
+  P.head({
+    file: 'contact.html',
+    title: 'Contact | SA Realtors',
+    desc: 'Contact SA Realtors. 380 Payneham Road, Payneham SA 5070. 0489 280 000. RLA 344822.'
+  }) +
+  P.pageHead({
+    crumbs: [{ label: 'Home', href: 'index.html' }, { label: 'Contact' }],
+    kicker: 'Get in touch',
+    title: 'Talk to us',
+    lede: 'Call whichever of us suits, or send the form and we will come back to you.',
+    centre: true
+  }) +
+  `<section class="sec sec--contact">
+  <div class="wrap contact">
+    ${P.AGENTS.map(a => `<div class="contact__card contact__card--agent reveal">
+      <div class="contact__pic"><img src="assets/${a.img}" alt="${P.esc(a.name)}" width="380" height="475" loading="lazy" decoding="async"></div>
+      <div class="contact__body">
+        <h2>${P.esc(a.name)}</h2>
+        <p class="contact__role">${P.esc(a.role)}</p>
+        <p><a class="contact__big" href="tel:${a.href}">${P.esc(a.phone)}</a></p>
+        <p><a href="agent-${a.slug}.html">Read more</a></p>
+      </div>
+    </div>`).join('\n')}
+  </div>
+</section>
+
+<section class="sec sec--office sec--tint">
+  <div class="wrap office">
+    <h2>The office</h2>
+    <p>${P.AGENCY.street}<br>${P.AGENCY.city}</p>
+    <p><a class="contact__big" href="tel:${P.AGENCY.phoneHref}">${P.AGENCY.phone}</a></p>
+    <p><a href="mailto:${P.AGENCY.email}">${P.AGENCY.email}</a></p>
+    <p class="contact__rla">${P.AGENCY.rla}</p>
+  </div>
+</section>
+
+${P.enquire({ title: 'Send us a message.', lede: 'Tell us what you need and we will get back to you.' })}` + P.foot());

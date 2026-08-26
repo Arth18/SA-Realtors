@@ -4,74 +4,50 @@
 
     <div class="stage__media" aria-hidden="true">
       <div class="poster" id="poster"></div>
-      <video id="hero" preload="none" muted playsinline aria-hidden="true" tabindex="-1"></video>
+      <video id="hero" preload="metadata" muted playsinline autoplay loop aria-hidden="true" tabindex="-1"></video>
       <div class="skylift"></div>
 
-    <!-- the signature: the survey boundary, drawn at the settle.
-         it lives inside the media so it tracks the video in every layout -->
-    <svg class="lot" id="lot" viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
-      <defs>
-        <mask id="lotMask" maskUnits="userSpaceOnUse">
-          <path class="drawmask" id="lotMaskPath" d="M 1300 600 L 1760 575 L 1800 745 L 1330 785 Z" fill="none" stroke="#fff" stroke-width="34" stroke-linejoin="round" stroke-linecap="round"></path>
-        </mask>
-      </defs>
-      <path class="lot__fill" d="M 1300 600 L 1760 575 L 1800 745 L 1330 785 Z"></path>
-      <path class="lot__line" id="lotLine" d="M 1300 600 L 1760 575 L 1800 745 L 1330 785 Z" mask="url(#lotMask)"></path>
-      <g class="lot__pegs" id="lotPegs">
-        <g class="peg" style="--i:0"><rect x="-9" y="-9" width="18" height="18" transform="translate(1300,600) rotate(45)"></rect><circle cx="1300" cy="600" r="3.4"></circle></g>
-        <g class="peg" style="--i:1"><rect x="-9" y="-9" width="18" height="18" transform="translate(1760,575) rotate(45)"></rect><circle cx="1760" cy="575" r="3.4"></circle></g>
-        <g class="peg" style="--i:2"><rect x="-9" y="-9" width="18" height="18" transform="translate(1800,745) rotate(45)"></rect><circle cx="1800" cy="745" r="3.4"></circle></g>
-        <g class="peg" style="--i:3"><rect x="-9" y="-9" width="18" height="18" transform="translate(1330,785) rotate(45)"></rect><circle cx="1330" cy="785" r="3.4"></circle></g>
-      </g>
-    </svg>
+      <!-- the survey boundary draws itself in once on load, then holds -->
+      <svg class="lot" id="lot" viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+        <defs>
+          <mask id="lotMask" maskUnits="userSpaceOnUse">
+            <path class="drawmask" id="lotMaskPath" d="M 1300 600 L 1760 575 L 1800 745 L 1330 785 Z" fill="none" stroke="#fff" stroke-width="34" stroke-linejoin="round" stroke-linecap="round"></path>
+          </mask>
+        </defs>
+        <path class="lot__fill" d="M 1300 600 L 1760 575 L 1800 745 L 1330 785 Z"></path>
+        <path class="lot__line" id="lotLine" d="M 1300 600 L 1760 575 L 1800 745 L 1330 785 Z" mask="url(#lotMask)"></path>
+        <g class="lot__pegs" id="lotPegs">
+          <g class="peg" style="--i:0"><rect x="-9" y="-9" width="18" height="18" transform="translate(1300,600) rotate(45)"></rect><circle cx="1300" cy="600" r="3.4"></circle></g>
+          <g class="peg" style="--i:1"><rect x="-9" y="-9" width="18" height="18" transform="translate(1760,575) rotate(45)"></rect><circle cx="1760" cy="575" r="3.4"></circle></g>
+          <g class="peg" style="--i:2"><rect x="-9" y="-9" width="18" height="18" transform="translate(1800,745) rotate(45)"></rect><circle cx="1800" cy="745" r="3.4"></circle></g>
+          <g class="peg" style="--i:3"><rect x="-9" y="-9" width="18" height="18" transform="translate(1330,785) rotate(45)"></rect><circle cx="1330" cy="785" r="3.4"></circle></g>
+        </g>
+      </svg>
 
-      <div class="cue" id="cue">
-        <span class="cue__label">Scroll</span>
-        <span class="cue__rule"></span>
-      </div>
-
-      <p class="loadring" id="loadring">
+      <p class="loadring" id="loadring" aria-hidden="true">
         <svg viewBox="0 0 48 48"><circle cx="24" cy="24" r="20" fill="none" stroke="currentColor" stroke-width="3" stroke-dasharray="126" style="stroke-dashoffset:var(--ld,126)"></circle></svg>
       </p>
     </div>
 
-    <div class="bands" id="bands">
-
-      <div class="band band--rail" data-a="0" data-b="0.30" data-entrance="grid" data-spread="0.55">
-        <p class="hline hline--1" data-split="char">Every block starts as a line on a map.</p>
-      </div>
-
-      <div class="band band--rail" data-a="0.35" data-b="0.63" data-entrance="part">
-        <p class="hline hline--3" data-split="word">North of Adelaide, they are still being drawn.</p>
-      </div>
-
-      <div class="band band--settle" data-a="0.70" data-b="1" data-entrance="settle" data-ramp="0.036">
-        <div class="settle">
-          <svg class="settle__curve" viewBox="0 0 120 600" preserveAspectRatio="none" aria-hidden="true">
-            <path d="M0,0 L44,0 C104,150 104,450 44,600 L0,600 Z"></path>
-          </svg>
-          <div class="settle__body">
-            <p class="kicker"><span class="pegmark" aria-hidden="true"></span>Adelaide, South Australia</p>
-            <h1 class="hline hline--h1" data-split="word">Your land. Your future.</h1>
-            <p class="settle__sub">Residential and future residential sites across Adelaide, from 700 square metres to ten acres.</p>
-            <p class="settle__cta"><a class="btn" href="#enquire">See what is available</a></p>
-          </div>
+    <div class="herotext">
+      <div class="settle">
+        <div class="settle__body">
+          <p class="kicker"><span class="pegmark" aria-hidden="true"></span>Adelaide, South Australia</p>
+          <h1 class="hline hline--h1">Your land. Your future.</h1>
+          <p class="settle__sub">Residential and future residential sites across Adelaide, from 250 square metres to 100 acres.</p>
+          <p class="settle__cta"><a class="btn" href="properties-for-sale.html">See what is available</a></p>
         </div>
       </div>
-
     </div>
 
-
-    <!-- survey instrument readout: fills the sky lane and reads the descent -->
+    <!-- survey instrument readout, stays in the sky lane -->
     <div class="hud" id="hud" aria-hidden="true">
       <span class="hud__rule"></span>
       <p class="hud__place">Adelaide &middot; Northern corridor</p>
       <dl class="hud__rows">
-        <div><dt>Altitude</dt><dd id="hudAlt">240 m</dd></div>
         <div><dt>Bearing</dt><dd>018&deg;</dd></div>
         <div><dt>Status</dt><dd id="hudState">Surveying</dd></div>
       </dl>
     </div>
-    <div class="marks" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
   </div>
 </section>

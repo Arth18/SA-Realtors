@@ -1,0 +1,90 @@
+{
+  const feature = sold.filter(p => p.gallery.length);
+  const body = `
+<!-- ============ WHAT ARE YOU LOOKING FOR ============ -->
+<section class="sec sec--choose">
+  <div class="wrap">${P.chooseType()}</div>
+</section>
+
+<!-- ============ WHAT WE DO ============ -->
+<section class="sec sec--offer" id="offer">
+  <div class="wrap">
+    ${P.sectionHead(
+      'We help you find the land that will be yours',
+      'Residential and future residential sites across Adelaide, from 250 square metres to 100 acre development projects.',
+      { kicker: 'Limited projects available', centre: true })}
+    <ul class="badges reveal">
+      <li class="badge">
+        <span class="badge__mark" aria-hidden="true"><svg viewBox="0 0 40 40"><path d="M7 27 L20 15 L33 27" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M11 27 v6 h18 v-6" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        <h3>Residential and future residential land</h3>
+      </li>
+      <li class="badge">
+        <span class="badge__mark" aria-hidden="true"><svg viewBox="0 0 40 40"><rect x="7" y="7" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.6"/><rect x="23" y="7" width="10" height="10" fill="none" stroke="currentColor" stroke-width="2.6"/><rect x="7" y="23" width="10" height="10" fill="none" stroke="currentColor" stroke-width="2.6"/><rect x="21" y="21" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.6"/></svg></span>
+        <h3>Multiple project sizes available</h3>
+      </li>
+      <li class="badge">
+        <span class="badge__mark" aria-hidden="true"><svg viewBox="0 0 40 40"><circle cx="14" cy="15" r="5" fill="none" stroke="currentColor" stroke-width="2.6"/><circle cx="27" cy="17" r="4" fill="none" stroke="currentColor" stroke-width="2.6"/><path d="M5 32 c0-6 4-9 9-9 s9 3 9 9" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/><path d="M24 32 c0-5 3-8 7-8 s5 3 5 8" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/></svg></span>
+        <h3>Suitable for developers and investors</h3>
+      </li>
+    </ul>
+    <p class="sec__more sec__more--centre"><a class="btn" href="development-opportunities.html">See land and development sites</a></p>
+  </div>
+</section>
+
+<!-- ============ HOW IT WORKS ============ -->
+<section class="sec sec--steps sec--tint" id="how">
+  <div class="wrap">
+    ${P.sectionHead('How our service works', 'Three steps, and you can stop after any of them. Nothing here costs you anything until you decide to buy.', { kicker: 'How it works', centre: true })}
+    ${P.steps([
+      ['Tell us what you want to do (build, develop or invest).',
+       'One call. What you have in mind, roughly what you can spend, and whether you have done it before. If we have nothing that fits we will say so on that call.'],
+      ['We find sites that fit, and check them properly.',
+       'Titled or untitled, what it will cost to make ready, what council has earmarked around it. We send you the numbers rather than a brochure.'],
+      ['You decide with the whole picture.',
+       'If a site does not stack up, we tell you and you walk away. If it does, we handle the deal end to end and you know every cost before you commit.']
+    ])}
+  </div>
+</section>
+
+<!-- ============ RECENTLY SOLD, AUTO-ROTATING ============ -->
+<section class="sec sec--listings">
+  <div class="wrap">
+    ${P.sectionHead('Recently sold', 'A sample of what we have moved lately. Every one of these was handled by the people whose numbers are on this page.', { centre: true })}
+    <div class="carousel js-carousel" data-min="3" aria-live="off">
+      <div class="carousel__track">
+        ${feature.map(P.propertyCard).join('\n')}
+      </div>
+    </div>
+    <p class="sec__more sec__more--centre"><a class="btn btn--ghost" href="properties-sold.html">See everything we have sold</a></p>
+  </div>
+</section>
+
+<!-- ============ OUR TEAM, AUTO-ROTATING ============ -->
+<section class="sec sec--team sec--tint" id="team">
+  <div class="wrap">
+    ${P.sectionHead('Our team', 'A small Adelaide agency where you speak to whichever of us can help.', { kicker: 'The people you deal with', centre: true })}
+    <div class="carousel js-carousel js-carousel--agents" data-min="3">
+      <div class="carousel__track">
+        ${P.AGENTS.map(P.agentCard).join('\n')}
+      </div>
+    </div>
+    <p class="sec__more sec__more--centre"><a class="btn btn--ghost" href="agents.html">Meet the team</a></p>
+  </div>
+</section>
+
+<!-- ============ PROOF STRIP ============ -->
+<section class="sec sec--proof">
+  <div class="wrap">${P.proofStrip(STATS, suburbs)}</div>
+</section>
+
+${P.enquire()}
+`;
+
+  page('index.html',
+    P.head({
+      file: 'index.html',
+      title: 'SA Realtors | Land and development sites across Adelaide',
+      desc: 'Residential and future residential land across Adelaide, from 250 square metres to 100 acre development sites. SA Realtors, Payneham. RLA 344822.',
+      bodyClass: 'has-hero'
+    }) + '\n' + HERO + '\n' + body + P.foot());
+}

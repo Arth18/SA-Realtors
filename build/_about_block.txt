@@ -1,0 +1,57 @@
+page('about.html',
+  P.head({
+    file: 'about.html',
+    title: 'About | SA Realtors',
+    desc: 'SA Realtors is a small Adelaide agency working land, development sites and residential property across the northern corridor. RLA 344822.'
+  }) +
+  P.pageHead({
+    crumbs: [{ label: 'Home', href: 'index.html' }, { label: 'About' }],
+    kicker: 'A name you can trust',
+    title: 'A small Adelaide agency that knows one patch properly',
+    lede: 'We work land and development sites through Adelaide’s northern corridor, and residential property across the suburbs around it.',
+    centre: true
+  }) +
+  `<section class="sec sec--prose">
+  <div class="wrap prose reveal">
+    <h2>What we do</h2>
+    <p>At SA Realtors, we specialise in property where experience and local knowledge make a real difference.</p>
+
+    <h3>Development and investment property</h3>
+    <p>A large part of our work is focused on land, development sites, future residential blocks, acreage with subdivision potential and off-market opportunities.</p>
+    <p>We help clients understand the important questions before they commit: Is the land titled? What will it cost to make the site ready? What can realistically be built? Are there service connections or other site costs to consider?</p>
+    <p>We have sold ${acres} acres across ${suburbs.length} suburbs, with much of our experience across Munno Para, Angle Vale, Kudla and Evanston Gardens.</p>
+
+    <h3>Buyers agent</h3>
+    <p>Looking for the right development site, investment property or off-market opportunity?</p>
+    <p>Our buyers agent service puts someone on your side of the transaction. We can help identify opportunities, assess the property and negotiate with the seller, particularly where the right property may not be openly advertised.</p>
+    <p>Our approach is simple: if the property doesn’t make sense for what you want to achieve, we’ll tell you.</p>
+
+    <h3>Property management</h3>
+    <p>We look after investment properties so owners don’t have to.</p>
+    <p>Our property management service is focused on keeping your investment well managed, your tenants supported and the day-to-day responsibilities taken care of.</p>
+    <p>Our management fee is 5.5% including GST<a href="#tc" class="prose__note">*</a>.</p>
+
+    <h3>Selling your property</h3>
+    <p>When it comes time to sell, our dedicated sales agent Dinesh Sharma specialises in property sales and works closely with vendors to achieve the best possible outcome.</p>
+    <p>Whether you’re selling a home, investment property or development opportunity, we bring local market knowledge and a practical approach to the process.</p>
+
+    <h3>Why SA Realtors?</h3>
+    <p>We believe good property advice starts with being upfront.</p>
+    <p>We tell you about the things that can cost you money before you commit, not after, from site costs and service connections to title timing and development considerations.</p>
+    <p>If a property isn’t right for your plans, we’ll say so. We’d rather lose a sale than put someone into the wrong property.</p>
+
+    <h3>The details</h3>
+    <p>${P.AGENCY.name}<br>${P.AGENCY.street}, ${P.AGENCY.city}<br>Licensed in South Australia &middot; ${P.AGENCY.rla}<br><a href="tel:${P.AGENCY.phoneHref}">${P.AGENCY.phone}</a> &middot; <a href="mailto:${P.AGENCY.email}">${P.AGENCY.email}</a></p>
+
+    <p class="prose__tc" id="tc">*Terms and conditions apply.</p>
+  </div>
+</section>
+
+<section class="sec sec--team sec--tint">
+  <div class="wrap">
+    ${P.sectionHead('The team', '', { centre: true })}
+    <div class="agrid">${P.AGENTS.map(P.agentCard).join('\n')}</div>
+  </div>
+</section>
+
+${P.enquire({ title: 'Come and talk to us.', lede: 'Send your details and one of us will call you back.' })}` + P.foot());

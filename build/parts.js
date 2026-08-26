@@ -63,7 +63,7 @@ const AGENTS = [
 
 const NAV = [
   { href: 'properties.html', label: 'Properties' },
-  { href: 'development-opportunities.html', label: 'Land' },
+  { href: 'development-opportunities.html', label: 'Developers' },
   { href: 'agents.html', label: 'Team' },
   { href: 'about.html', label: 'About' },
   { href: 'contact.html', label: 'Contact' }
@@ -175,7 +175,8 @@ function pageHead(o) {
   const crumbs = (o.crumbs || []).map(c =>
     c.href ? `<a href="${c.href}">${esc(c.label)}</a>` : `<span aria-current="page">${esc(c.label)}</span>`
   ).join('<i aria-hidden="true">/</i>');
-  return `<section class="phead">
+  const cls = o.centre ? ' phead--centre' : '';
+  return `<section class="phead${cls}">
   <div class="wrap">
     <nav class="crumb" aria-label="Breadcrumb">${crumbs}</nav>
     ${o.kicker ? `<p class="kicker"><span class="pegmark" aria-hidden="true"></span>${esc(o.kicker)}</p>` : ''}
@@ -190,7 +191,8 @@ function pageHead(o) {
 /* the reference's signature section header: headline left, short paragraph right */
 function sectionHead(title, para, opts) {
   const o = opts || {};
-  return `<div class="shead reveal">
+  const cls = 'shead reveal' + (o.centre ? ' shead--centre' : '');
+  return `<div class="${cls}">
   ${o.kicker ? `<p class="kicker"><span class="pegmark" aria-hidden="true"></span>${esc(o.kicker)}</p>` : ''}
   <div class="shead__row">
     <h2${o.light ? ' class="on-dark"' : ''}>${esc(title)}</h2>
@@ -391,6 +393,29 @@ function enquire(o) {
 }
 
 /* ---------- the quick find bar: a real way into the listings ---------- */
+
+/* ---------- three clickable "what are you looking for" cards ---------- */
+function chooseType() {
+  const opts = [
+    ['Land or a development site', 'From 250 square metres to 100 acres', 'development-opportunities.html',
+      '<svg viewBox="0 0 40 40"><path d="M6 30 L20 12 L34 30 Z" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linejoin="round"/><path d="M6 30 L34 30" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg>'],
+    ['Properties for sale', 'Homes ready to move into or invest in', 'properties-for-sale.html',
+      '<svg viewBox="0 0 40 40"><path d="M6 20 L20 8 L34 20" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/><rect x="10" y="20" width="20" height="14" fill="none" stroke="currentColor" stroke-width="2.4"/><rect x="17" y="24" width="6" height="10" fill="none" stroke="currentColor" stroke-width="2.2"/></svg>'],
+    ['Properties for rent', 'Places to lease across the northern suburbs', 'properties-for-rent.html',
+      '<svg viewBox="0 0 40 40"><rect x="7" y="10" width="26" height="22" fill="none" stroke="currentColor" stroke-width="2.4"/><path d="M13 18 h14 M13 24 h10" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/><circle cx="27" cy="24" r="1.8" fill="currentColor"/></svg>']
+  ];
+  const cards = opts.map(([label, note, href, icon]) => `<a class="choose__card reveal" href="${href}">
+    <span class="choose__ico" aria-hidden="true">${icon}</span>
+    <span class="choose__label">${esc(label)}</span>
+    <span class="choose__note">${esc(note)}</span>
+    <span class="choose__go" aria-hidden="true">Show me <i></i></span>
+  </a>`).join('\n');
+  return `<div class="choose">
+  <p class="choose__lead"><span class="pegmark" aria-hidden="true"></span>Tell us what you are looking for</p>
+  <div class="choose__grid">${cards}</div>
+</div>`;
+}
+
 function findBar(suburbs) {
   const opts = suburbs.map(s => '<option>' + esc(s) + '</option>').join('');
   return `<form class="find reveal" id="find" action="properties.html" method="get">
@@ -440,6 +465,6 @@ module.exports = {
   AGENCY, AGENTS, NAV, esc,
   head, nav, foot, pageHead, sectionHead,
   propertyCard, grid, offerRow, agentCard, statBlock, promo, enquire,
-  findBar, steps, proofStrip,
+  chooseType, findBar, steps, proofStrip,
   priceOf, tagClass, spec
 };

@@ -4,14 +4,14 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>SA Realtors | Land and development sites across Adelaide</title>
-<meta name="description" content="Residential and future residential land across Adelaide, from 700 square metres to ten acre development sites. SA Realtors, Payneham. RLA 344822.">
+<meta name="description" content="Land and development sites across Adelaide, from small blocks at 250m² to 100 acres. SA Realtors, Payneham. RLA 344822.">
 <meta name="theme-color" content="#F1F5FA">
 <link rel="canonical" href="PLACEHOLDER_LIVE_URL/index.html">
 
 <!-- DEPLOY STEP: patch og:url and og:image with the live absolute URL before zipping -->
 <meta property="og:type" content="website">
 <meta property="og:title" content="SA Realtors | Land and development sites across Adelaide">
-<meta property="og:description" content="Residential and future residential land across Adelaide, from 700 square metres to ten acre development sites. SA Realtors, Payneham. RLA 344822.">
+<meta property="og:description" content="Residential and future residential land across Adelaide, from 250 square metres to 100 acre development sites. SA Realtors, Payneham. RLA 344822.">
 <meta property="og:url" content="PLACEHOLDER_LIVE_URL/index.html">
 <meta property="og:image" content="PLACEHOLDER_LIVE_URL/assets/og-cover.jpg">
 <meta name="twitter:card" content="summary_large_image">
@@ -34,7 +34,7 @@
     <span class="navtoggle__bars" aria-hidden="true"></span>
     <span class="vh">Menu</span>
   </button>
-  <ul class="nav__links" id="navlinks"><li><a href="properties.html">Properties</a></li><li><a href="development-opportunities.html">Land</a></li><li><a href="agents.html">Team</a></li><li><a href="about.html">About</a></li><li><a href="contact.html">Contact</a></li></ul>
+  <ul class="nav__links" id="navlinks"><li><a href="properties.html">Properties</a></li><li><a href="development-opportunities.html">Developers</a></li><li><a href="agents.html">Team</a></li><li><a href="about.html">About</a></li><li><a href="contact.html">Contact</a></li></ul>
   <a class="btn btn--sm nav__cta" href="#enquire">Enquire now</a>
 </nav>
 <main id="main" tabindex="-1">
@@ -44,108 +44,88 @@
 
     <div class="stage__media" aria-hidden="true">
       <div class="poster" id="poster"></div>
-      <video id="hero" preload="none" muted playsinline aria-hidden="true" tabindex="-1"></video>
+      <video id="hero" preload="auto" muted playsinline autoplay loop aria-hidden="true" tabindex="-1"></video>
       <div class="skylift"></div>
 
-    <!-- the signature: the survey boundary, drawn at the settle.
-         it lives inside the media so it tracks the video in every layout -->
-    <svg class="lot" id="lot" viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
-      <defs>
-        <mask id="lotMask" maskUnits="userSpaceOnUse">
-          <path class="drawmask" id="lotMaskPath" d="M 1300 600 L 1760 575 L 1800 745 L 1330 785 Z" fill="none" stroke="#fff" stroke-width="34" stroke-linejoin="round" stroke-linecap="round"></path>
-        </mask>
-      </defs>
-      <path class="lot__fill" d="M 1300 600 L 1760 575 L 1800 745 L 1330 785 Z"></path>
-      <path class="lot__line" id="lotLine" d="M 1300 600 L 1760 575 L 1800 745 L 1330 785 Z" mask="url(#lotMask)"></path>
-      <g class="lot__pegs" id="lotPegs">
-        <g class="peg" style="--i:0"><rect x="-9" y="-9" width="18" height="18" transform="translate(1300,600) rotate(45)"></rect><circle cx="1300" cy="600" r="3.4"></circle></g>
-        <g class="peg" style="--i:1"><rect x="-9" y="-9" width="18" height="18" transform="translate(1760,575) rotate(45)"></rect><circle cx="1760" cy="575" r="3.4"></circle></g>
-        <g class="peg" style="--i:2"><rect x="-9" y="-9" width="18" height="18" transform="translate(1800,745) rotate(45)"></rect><circle cx="1800" cy="745" r="3.4"></circle></g>
-        <g class="peg" style="--i:3"><rect x="-9" y="-9" width="18" height="18" transform="translate(1330,785) rotate(45)"></rect><circle cx="1330" cy="785" r="3.4"></circle></g>
-      </g>
-    </svg>
+      <!-- the survey boundary draws itself in once on load, then holds -->
+      <svg class="lot" id="lot" viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+        <defs>
+          <mask id="lotMask" maskUnits="userSpaceOnUse">
+            <path class="drawmask" id="lotMaskPath" d="M 1300 600 L 1760 575 L 1800 745 L 1330 785 Z" fill="none" stroke="#fff" stroke-width="34" stroke-linejoin="round" stroke-linecap="round"></path>
+          </mask>
+        </defs>
+        <path class="lot__fill" d="M 1300 600 L 1760 575 L 1800 745 L 1330 785 Z"></path>
+        <path class="lot__line" id="lotLine" d="M 1300 600 L 1760 575 L 1800 745 L 1330 785 Z" mask="url(#lotMask)"></path>
+        <g class="lot__pegs" id="lotPegs">
+          <g class="peg" style="--i:0"><rect x="-9" y="-9" width="18" height="18" transform="translate(1300,600) rotate(45)"></rect><circle cx="1300" cy="600" r="3.4"></circle></g>
+          <g class="peg" style="--i:1"><rect x="-9" y="-9" width="18" height="18" transform="translate(1760,575) rotate(45)"></rect><circle cx="1760" cy="575" r="3.4"></circle></g>
+          <g class="peg" style="--i:2"><rect x="-9" y="-9" width="18" height="18" transform="translate(1800,745) rotate(45)"></rect><circle cx="1800" cy="745" r="3.4"></circle></g>
+          <g class="peg" style="--i:3"><rect x="-9" y="-9" width="18" height="18" transform="translate(1330,785) rotate(45)"></rect><circle cx="1330" cy="785" r="3.4"></circle></g>
+        </g>
+      </svg>
 
-      <div class="cue" id="cue">
-        <span class="cue__label">Scroll</span>
-        <span class="cue__rule"></span>
-      </div>
-
-      <p class="loadring" id="loadring">
+      <p class="loadring" id="loadring" aria-hidden="true">
         <svg viewBox="0 0 48 48"><circle cx="24" cy="24" r="20" fill="none" stroke="currentColor" stroke-width="3" stroke-dasharray="126" style="stroke-dashoffset:var(--ld,126)"></circle></svg>
       </p>
     </div>
 
-    <div class="bands" id="bands">
-
-      <div class="band band--rail" data-a="0" data-b="0.30" data-entrance="grid" data-spread="0.55">
-        <p class="hline hline--1" data-split="char">Every block starts as a line on a map.</p>
-      </div>
-
-      <div class="band band--rail" data-a="0.35" data-b="0.63" data-entrance="part">
-        <p class="hline hline--3" data-split="word">North of Adelaide, they are still being drawn.</p>
-      </div>
-
-      <div class="band band--settle" data-a="0.70" data-b="1" data-entrance="settle" data-ramp="0.036">
-        <div class="settle">
-          <svg class="settle__curve" viewBox="0 0 120 600" preserveAspectRatio="none" aria-hidden="true">
-            <path d="M0,0 L44,0 C104,150 104,450 44,600 L0,600 Z"></path>
-          </svg>
-          <div class="settle__body">
-            <p class="kicker"><span class="pegmark" aria-hidden="true"></span>Adelaide, South Australia</p>
-            <h1 class="hline hline--h1" data-split="word">Your land. Your future.</h1>
-            <p class="settle__sub">Residential and future residential sites across Adelaide, from 700 square metres to ten acres.</p>
-            <p class="settle__cta"><a class="btn" href="#enquire">See what is available</a></p>
-          </div>
+    <div class="herotext">
+      <div class="settle">
+        <div class="settle__body">
+          <p class="kicker"><span class="pegmark" aria-hidden="true"></span>Adelaide, South Australia</p>
+          <h1 class="hline hline--h1">Your land. Your future.</h1>
+          <p class="settle__sub">Land and development sites across Adelaide — from small blocks at 250m² to 100 acres. A name you can trust.</p>
+          <p class="settle__cta"><a class="btn" href="properties-for-sale.html">See what is available</a></p>
         </div>
       </div>
-
     </div>
 
-
-    <!-- survey instrument readout: fills the sky lane and reads the descent -->
+    <!-- survey instrument readout, stays in the sky lane -->
     <div class="hud" id="hud" aria-hidden="true">
       <span class="hud__rule"></span>
       <p class="hud__place">Adelaide &middot; Northern corridor</p>
       <dl class="hud__rows">
-        <div><dt>Altitude</dt><dd id="hudAlt">240 m</dd></div>
         <div><dt>Bearing</dt><dd>018&deg;</dd></div>
         <div><dt>Status</dt><dd id="hudState">Surveying</dd></div>
       </dl>
     </div>
-    <div class="marks" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
   </div>
 </section>
 
-<!-- ============ FIND A BLOCK ============ -->
-<section class="sec sec--find">
-  <div class="wrap"><form class="find reveal" id="find" action="properties.html" method="get">
-  <p class="find__lead"><span class="pegmark" aria-hidden="true"></span>Find a block</p>
-  <div class="find__f">
-    <label for="q-type">What are you after?</label>
-    <select id="q-type" name="type">
-      <option value="">Anything</option>
-      <option value="land">Land or a development site</option>
-      <option value="residential">A house</option>
-    </select>
-  </div>
-  <div class="find__f">
-    <label for="q-suburb">Where?</label>
-    <select id="q-suburb" name="suburb">
-      <option value="">Anywhere in Adelaide</option><option>Angle Vale</option><option>Broadview</option><option>Elizabeth</option><option>Elizabeth Grove</option><option>Evanston Gardens</option><option>Kudla</option><option>Munno Para Downs</option><option>Munno Para West</option><option>Norwood</option><option>Salisbury Downs</option><option>Salisbury North</option>
-    </select>
-  </div>
-  <button class="btn" type="submit">Show me</button>
-</form></div>
+
+<!-- ============ WHAT ARE YOU LOOKING FOR ============ -->
+<section class="sec sec--choose">
+  <div class="wrap"><div class="choose">
+  <p class="choose__lead"><span class="pegmark" aria-hidden="true"></span>What are you looking for?</p>
+  <div class="choose__grid"><a class="choose__card reveal" href="development-opportunities.html">
+    <span class="choose__ico" aria-hidden="true"><svg viewBox="0 0 40 40"><path d="M6 30 L20 12 L34 30 Z" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linejoin="round"/><path d="M6 30 L34 30" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg></span>
+    <span class="choose__label">Land / Development Opportunity</span>
+    <span class="choose__note">From small blocks at 250m² to 100 acres</span>
+    <span class="choose__go" aria-hidden="true">Show me <i></i></span>
+  </a>
+<a class="choose__card reveal" href="properties-for-sale.html">
+    <span class="choose__ico" aria-hidden="true"><svg viewBox="0 0 40 40"><path d="M6 20 L20 8 L34 20" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/><rect x="10" y="20" width="20" height="14" fill="none" stroke="currentColor" stroke-width="2.4"/><rect x="17" y="24" width="6" height="10" fill="none" stroke="currentColor" stroke-width="2.2"/></svg></span>
+    <span class="choose__label">Properties for Sale</span>
+    <span class="choose__note">Homes ready to move into or invest in</span>
+    <span class="choose__go" aria-hidden="true">Show me <i></i></span>
+  </a>
+<a class="choose__card reveal" href="properties-for-rent.html">
+    <span class="choose__ico" aria-hidden="true"><svg viewBox="0 0 40 40"><rect x="7" y="10" width="26" height="22" fill="none" stroke="currentColor" stroke-width="2.4"/><path d="M13 18 h14 M13 24 h10" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/><circle cx="27" cy="24" r="1.8" fill="currentColor"/></svg></span>
+    <span class="choose__label">Properties for Rent</span>
+    <span class="choose__note">Places to lease across the northern suburbs</span>
+    <span class="choose__go" aria-hidden="true">Show me <i></i></span>
+  </a></div>
+</div></div>
 </section>
 
 <!-- ============ WHAT WE DO ============ -->
 <section class="sec sec--offer" id="offer">
   <div class="wrap">
-    <div class="shead reveal">
+    <div class="shead reveal shead--centre">
   <p class="kicker"><span class="pegmark" aria-hidden="true"></span>Limited projects available</p>
   <div class="shead__row">
     <h2>We help you find the land that will be yours</h2>
-    <p class="shead__note">Residential and future residential sites across Adelaide, from small blocks at 700 square metres through to ten acre development projects.</p>
+    <p class="shead__note">Land and development sites across Adelaide, from small blocks at 250m² to 100 acres.</p>
   </div>
 </div>
     <ul class="badges reveal">
@@ -162,24 +142,24 @@
         <h3>Suitable for developers and investors</h3>
       </li>
     </ul>
-    <p class="sec__more"><a class="btn" href="development-opportunities.html">See land and development sites</a></p>
+    <p class="sec__more sec__more--centre"><a class="btn" href="development-opportunities.html">See land and development sites</a></p>
   </div>
 </section>
 
 <!-- ============ HOW IT WORKS ============ -->
 <section class="sec sec--steps sec--tint" id="how">
   <div class="wrap">
-    <div class="shead reveal">
+    <div class="shead reveal shead--centre">
   <p class="kicker"><span class="pegmark" aria-hidden="true"></span>How it works</p>
   <div class="shead__row">
-    <h2>How buying a site with us actually goes</h2>
+    <h2>How our service works</h2>
     <p class="shead__note">Three steps, and you can stop after any of them. Nothing here costs you anything until you decide to buy.</p>
   </div>
 </div>
     <ol class="steps">
   <li class="step reveal" style="--i:0">
     <span class="step__n" aria-hidden="true">01</span>
-    <h3>Tell us what you want to build.</h3>
+    <h3>Tell us what you want to do (build, develop or invest).</h3>
     <p>One call. What you have in mind, roughly what you can spend, and whether you have done it before. If we have nothing that fits we will say so on that call.</p>
   </li>
   <li class="step reveal" style="--i:1">
@@ -195,17 +175,19 @@
   </div>
 </section>
 
-<!-- ============ RECENT RESULTS ============ -->
+<!-- ============ RECENTLY SOLD, AUTO-ROTATING ============ -->
 <section class="sec sec--listings">
   <div class="wrap">
-    <div class="shead reveal">
+    <div class="shead reveal shead--centre">
   
   <div class="shead__row">
     <h2>Recently sold</h2>
     <p class="shead__note">A sample of what we have moved lately. Every one of these was handled by the people whose numbers are on this page.</p>
   </div>
 </div>
-    <div class="pgrid "><article class="pcard reveal" data-state="Sold" data-suburb="Salisbury North" data-kind="residential">
+    <div class="carousel js-carousel" data-min="3" aria-live="off">
+      <div class="carousel__track">
+        <article class="pcard reveal" data-state="Sold" data-suburb="Salisbury North" data-kind="residential">
   <a class="pcard__fig" href="property-13-massey-street-salisbury-north-sa-5108.html" tabindex="-1" aria-hidden="true">
     <img src="assets/img/13-massey-street-salisbury-north-sa-5108-card.webp" alt="" width="800" height="533" loading="lazy" decoding="async">
     <span class="ptag ptag--sold">Sold</span>
@@ -228,50 +210,130 @@
     <p class="pcard__sub">Munno Para West, South Australia</p>
     <ul class="pcard__specs"><li class="spec"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 18v-7a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v7M3 14h18M7 9V7a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v2"/></svg><b>5</b> <span>beds</span></li><li class="spec"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12h16v3a4 4 0 0 1-4 4H8a4 4 0 0 1-4-4zM7 12V6a2 2 0 0 1 4 0"/></svg><b>2</b> <span>baths</span></li><li class="spec"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 16h14M6 16l1.4-5.2A2 2 0 0 1 9.3 9h5.4a2 2 0 0 1 1.9 1.4L18 16M4 16v3M20 16v3"/></svg><b>2</b> <span>car</span></li></ul>
   </div>
-</article></div>
-    <p class="sec__more"><a class="btn btn--ghost" href="properties-sold.html">See everything we have sold</a></p>
+</article>
+<article class="pcard reveal" data-state="Sold" data-suburb="Evanston Gardens" data-kind="land">
+  <a class="pcard__fig" href="property-68-78-coventry-rd-evanston-gardens-sa-5116.html" tabindex="-1" aria-hidden="true">
+    <img src="assets/img/68-78-coventry-rd-evanston-gardens-sa-5116-card.webp" alt="" width="800" height="533" loading="lazy" decoding="async">
+    <span class="ptag ptag--sold">Sold</span>
+  </a>
+  <div class="pcard__body">
+    <p class="pcard__price">10 acres <small>Sold</small></p>
+    <h3 class="pcard__title"><a href="property-68-78-coventry-rd-evanston-gardens-sa-5116.html">68-78 Coventry Road, Evanston Gardens SA 5116</a></h3>
+    <p class="pcard__sub">Evanston Gardens, South Australia</p>
+    <ul class="pcard__specs"><li class="spec"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 20l4-14 10 2 4 12z" stroke-dasharray="3 2"/><circle cx="12" cy="12" r="1.3"/></svg><b>10 acres</b> <span></span></li></ul>
+  </div>
+</article>
+<article class="pcard reveal" data-state="Sold" data-suburb="Kudla" data-kind="land">
+  <a class="pcard__fig" href="property-693-coventry-road-kudla.html" tabindex="-1" aria-hidden="true">
+    <img src="assets/img/693-coventry-road-kudla-card.webp" alt="" width="800" height="533" loading="lazy" decoding="async">
+    <span class="ptag ptag--sold">Sold</span>
+  </a>
+  <div class="pcard__body">
+    <p class="pcard__price">10 acres <small>Sold</small></p>
+    <h3 class="pcard__title"><a href="property-693-coventry-road-kudla.html">693 Coventry Road Kudla</a></h3>
+    <p class="pcard__sub">Kudla, South Australia</p>
+    <ul class="pcard__specs"><li class="spec"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 20l4-14 10 2 4 12z" stroke-dasharray="3 2"/><circle cx="12" cy="12" r="1.3"/></svg><b>10 acres</b> <span></span></li></ul>
+  </div>
+</article>
+<article class="pcard reveal" data-state="Sold" data-suburb="Kudla" data-kind="land">
+  <a class="pcard__fig" href="property-737-coventry-road-kudla-sa-5115.html" tabindex="-1" aria-hidden="true">
+    <img src="assets/img/737-coventry-road-kudla-sa-5115-card.webp" alt="" width="800" height="533" loading="lazy" decoding="async">
+    <span class="ptag ptag--sold">Sold</span>
+  </a>
+  <div class="pcard__body">
+    <p class="pcard__price">5 acres <small>Sold</small></p>
+    <h3 class="pcard__title"><a href="property-737-coventry-road-kudla-sa-5115.html">737 Coventry Road Kudla, SA 5115</a></h3>
+    <p class="pcard__sub">Kudla, South Australia</p>
+    <ul class="pcard__specs"><li class="spec"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 20l4-14 10 2 4 12z" stroke-dasharray="3 2"/><circle cx="12" cy="12" r="1.3"/></svg><b>5 acres</b> <span></span></li></ul>
+  </div>
+</article>
+<article class="pcard reveal" data-state="Sold" data-suburb="Munno Para Downs" data-kind="land">
+  <a class="pcard__fig" href="property-lot-13-pannan-road-munno-para-downs-sa-5115.html" tabindex="-1" aria-hidden="true">
+    <img src="assets/img/lot-13-pannan-road-munno-para-downs-sa-5115-card.webp" alt="" width="800" height="533" loading="lazy" decoding="async">
+    <span class="ptag ptag--sold">Sold</span>
+  </a>
+  <div class="pcard__body">
+    <p class="pcard__price">5 acres <small>Sold</small></p>
+    <h3 class="pcard__title"><a href="property-lot-13-pannan-road-munno-para-downs-sa-5115.html">Lot 13 Pannan Road Munno Para Downs, SA 5115</a></h3>
+    <p class="pcard__sub">Munno Para Downs, South Australia</p>
+    <ul class="pcard__specs"><li class="spec"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 20l4-14 10 2 4 12z" stroke-dasharray="3 2"/><circle cx="12" cy="12" r="1.3"/></svg><b>5 acres</b> <span></span></li></ul>
+  </div>
+</article>
+<article class="pcard reveal" data-state="Sold" data-suburb="Angle Vale" data-kind="land">
+  <a class="pcard__fig" href="property-lot-508-fradd-road-angle-vale-south-australia-5117.html" tabindex="-1" aria-hidden="true">
+    <img src="assets/img/lot-508-fradd-road-angle-vale-south-australia-5117-card.webp" alt="" width="800" height="533" loading="lazy" decoding="async">
+    <span class="ptag ptag--sold">Sold</span>
+  </a>
+  <div class="pcard__body">
+    <p class="pcard__price">7.5 acres <small>Sold</small></p>
+    <h3 class="pcard__title"><a href="property-lot-508-fradd-road-angle-vale-south-australia-5117.html">Lot 508 Fradd Road, Angle Vale, SA 5117</a></h3>
+    <p class="pcard__sub">Angle Vale, South Australia</p>
+    <ul class="pcard__specs"><li class="spec"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 20l4-14 10 2 4 12z" stroke-dasharray="3 2"/><circle cx="12" cy="12" r="1.3"/></svg><b>7.5 acres</b> <span></span></li></ul>
+  </div>
+</article>
+      </div>
+    </div>
+    <p class="sec__more sec__more--centre"><a class="btn btn--ghost" href="properties-sold.html">See everything we have sold</a></p>
   </div>
 </section>
 
-<!-- ============ THE INTERACTIVE MOMENT ============ -->
-<section class="sec sec--survey" id="survey">
-  <div class="survey" id="surveyWrap">
-    <div class="survey__frame">
-      <img class="survey__img" src="assets/blocks.webp" alt="Vacant residential blocks seen from directly above, with roads and kerbs already in" width="1500" height="844" loading="lazy" decoding="async">
-      <svg class="survey__svg" viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
-        <defs>
-          <mask id="surveyMask" maskUnits="userSpaceOnUse">
-            <path class="drawmask" id="surveyMaskPath" d="M 560 300 L 1310 300 L 1310 700 L 560 700 Z" fill="none" stroke="#fff" stroke-width="40" stroke-linejoin="round" stroke-linecap="round"></path>
-          </mask>
-        </defs>
-        <path class="survey__fill" d="M 560 300 L 1310 300 L 1310 700 L 560 700 Z"></path>
-        <path class="survey__line" id="surveyLine" d="M 560 300 L 1310 300 L 1310 700 L 560 700 Z" mask="url(#surveyMask)"></path>
-        <g class="survey__pegs" id="surveyPegs">
-          <g class="peg" style="--i:0"><rect x="-10" y="-10" width="20" height="20" transform="translate(560,300) rotate(45)"></rect><circle cx="560" cy="300" r="3.6"></circle></g>
-          <g class="peg" style="--i:1"><rect x="-10" y="-10" width="20" height="20" transform="translate(1310,300) rotate(45)"></rect><circle cx="1310" cy="300" r="3.6"></circle></g>
-          <g class="peg" style="--i:2"><rect x="-10" y="-10" width="20" height="20" transform="translate(1310,700) rotate(45)"></rect><circle cx="1310" cy="700" r="3.6"></circle></g>
-          <g class="peg" style="--i:3"><rect x="-10" y="-10" width="20" height="20" transform="translate(560,700) rotate(45)"></rect><circle cx="560" cy="700" r="3.6"></circle></g>
-        </g>
-      </svg>
-      <button class="survey__hit" id="surveyHit" type="button" aria-describedby="surveyHelp">
-        <span class="survey__hint" id="surveyHint">Press and hold</span>
-      </button>
-      <div class="survey__hud chip" id="surveyHud" aria-hidden="true">
-        <span class="survey__row"><b>AREA</b> <i id="hudArea">0</i></span>
-        <span class="survey__row"><b>ZONING</b> <i id="hudZone">&ndash;</i></span>
-        <span class="survey__row"><b>STATUS</b> <i id="hudStatus">&ndash;</i></span>
-      </div>
+<!-- ============ OUR TEAM, AUTO-ROTATING ============ -->
+<section class="sec sec--team sec--tint" id="team">
+  <div class="wrap">
+    <div class="shead reveal shead--centre">
+  <p class="kicker"><span class="pegmark" aria-hidden="true"></span>The people you deal with</p>
+  <div class="shead__row">
+    <h2>Our team</h2>
+    <p class="shead__note">A small Adelaide agency where you speak to whichever of us can help.</p>
+  </div>
+</div>
+    <div class="agrid agrid--4">
+        <article class="acard reveal">
+  <a class="acard__fig" href="agent-nayan-darji.html" tabindex="-1" aria-hidden="true">
+    <img src="assets/agent-nayan.webp" alt="" width="760" height="1000" loading="lazy" decoding="async">
+  </a>
+  <div class="acard__body">
+    <h3><a href="agent-nayan-darji.html">Nayan Darji</a></h3>
+    <p class="acard__role">Director and Property Advisor</p>
+    <p class="acard__focus">Land and development sites, right across Adelaide.</p>
+    <a class="btn btn--ghost btn--sm" href="tel:+61410708765">0410 708 765</a>
+  </div>
+</article>
+<article class="acard reveal">
+  <a class="acard__fig" href="agent-dishant-suresh.html" tabindex="-1" aria-hidden="true">
+    <img src="assets/agent-dishant.webp" alt="" width="760" height="1000" loading="lazy" decoding="async">
+  </a>
+  <div class="acard__body">
+    <h3><a href="agent-dishant-suresh.html">Dishant Suresh</a></h3>
+    <p class="acard__role">Principal and Buyers Agent</p>
+    <p class="acard__focus">Buying side, and the principal of the agency.</p>
+    <a class="btn btn--ghost btn--sm" href="tel:+61434750000">0434 750 000</a>
+  </div>
+</article>
+<article class="acard reveal">
+  <a class="acard__fig" href="agent-dinesh-sharma.html" tabindex="-1" aria-hidden="true">
+    <img src="assets/agent-dinesh-sharma.webp" alt="" width="760" height="1000" loading="lazy" decoding="async">
+  </a>
+  <div class="acard__body">
+    <h3><a href="agent-dinesh-sharma.html">Dinesh Sharma</a></h3>
+    <p class="acard__role">Sales Agent</p>
+    <p class="acard__focus">Residential sales across the northern suburbs.</p>
+    <a class="btn btn--ghost btn--sm" href="tel:+61411563330">0411 563 330</a>
+  </div>
+</article>
+<article class="acard reveal">
+  <a class="acard__fig" href="agent-ankur-raithatha.html" tabindex="-1" aria-hidden="true">
+    <img src="assets/agent-ankur.webp" alt="" width="760" height="1000" loading="lazy" decoding="async">
+  </a>
+  <div class="acard__body">
+    <h3><a href="agent-ankur-raithatha.html">Ankur Raithatha</a></h3>
+    <p class="acard__role">Buyers Agent</p>
+    <p class="acard__focus">Buying side, securing residential and development sites.</p>
+    <a class="btn btn--ghost btn--sm" href="tel:+61430437766">0430 437 766</a>
+  </div>
+</article>
     </div>
-    <div class="survey__text">
-      <p class="kicker kicker--light"><span class="pegmark" aria-hidden="true"></span>Hold to survey</p>
-      <h2 class="h2 h2--light">This is what we do all day.</h2>
-      <p class="lede lede--light" id="surveyHelp">Press and hold anywhere on the block. That is the whole job, finding the line worth drawing and making sure it holds.</p>
-      <ul class="sizes" id="sizes">
-        <li class="size" style="--i:0"><b>700m&sup2;</b><span>Small residential sites</span></li>
-        <li class="size" style="--i:1"><b>1 by 2</b><span>Sites ready for development</span></li>
-        <li class="size" style="--i:2"><b>10 acres</b><span>Future residential projects</span></li>
-      </ul>
-    </div>
+    <p class="sec__more sec__more--centre"><a class="btn btn--ghost" href="agents.html">Meet the team</a></p>
   </div>
 </section>
 
@@ -318,7 +380,7 @@
       </div>
       <div class="field">
         <label for="f-want">What are you looking for?</label>
-        <select id="f-want" name="want"><option>A residential site</option><option>A future residential project</option><option>Not sure yet, send me what you have</option></select>
+        <select id="f-want" name="want"><option>Land / Development Opportunity</option><option>Properties for Sale</option><option>Properties for Rent</option><option>Not sure yet, send me what you have</option></select>
       </div>
       <div class="field">
         <label for="f-note">Anything else we should know <span class="opt">(optional)</span></label>

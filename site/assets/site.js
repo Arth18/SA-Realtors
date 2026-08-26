@@ -107,424 +107,169 @@
 
   /* =======================================================
      HERO  (home page only)
+
+     Video plays and loops on its own. Message is visible immediately
+     without needing to scroll. The survey boundary draws itself in
+     once when the page loads, then holds.
      ======================================================= */
   (function heroModule() {
     var hero = document.querySelector('.hero');
     var stage = document.getElementById('stage');
     var video = document.getElementById('hero');
     var poster = document.getElementById('poster');
-    var cue = document.getElementById('cue');
     var ringEl = document.getElementById('loadring');
     var lot = document.getElementById('lot');
     if (!hero || !stage || !video || !poster) return;
 
     var VIDEO_URL = 'assets/hero-scrub.mp4';
-    var VIDEO_BYTES = 4180097;
     var POSTER_URL = 'assets/hero-poster.webp';
     var ring = ringEl ? ringEl.querySelector('circle') : null;
+    var hudState = document.getElementById('hudState');
 
-    var bands = [].slice.call(document.querySelectorAll('.band')).map(function (el) {
-      return {
-        el: el, a: parseFloat(el.dataset.a), b: parseFloat(el.dataset.b),
-        ramp: el.dataset.ramp ? parseFloat(el.dataset.ramp) : 0,
-        entrance: el.dataset.entrance || '', op: -1, k: -1
-      };
-    });
-
-    function splitLine(el, entrance, spread) {
-      var text = el.textContent.replace(/\s+/g, ' ').trim();
-      if (!text) return;
-      var rand = rng(seedOf(text));
-      var mode = el.dataset.split || 'word';
-      el.textContent = '';
-      var sr = document.createElement('span');
-      sr.className = 'vh'; sr.textContent = text;
-      el.appendChild(sr);
-      var vis = document.createElement('span');
-      vis.setAttribute('aria-hidden', 'true');
-      var words = text.split(' ');
-      var totalChars = text.replace(/ /g, '').length;
-      var charSeen = 0;
-      words.forEach(function (word, wi) {
-        var w = document.createElement('span');
-        w.className = 'w';
-        if (mode === 'char') {
-          for (var ci = 0; ci < word.length; ci++) {
-            var c = document.createElement('span');
-            c.className = 'c'; c.textContent = word[ci];
-            c.style.setProperty('--th', ((charSeen / totalChars) * spread + rand() * 0.06).toFixed(4));
-            c.style.setProperty('--jx', (-14 - rand() * 26).toFixed(1) + 'px');
-            w.appendChild(c); charSeen++;
-          }
-        } else {
-          w.textContent = word;
-          var t;
-          if (entrance === 'part') {
-            var left = wi < words.length / 2;
-            t = (left ? (words.length / 2 - wi) : (wi - words.length / 2 + 1)) / words.length * spread;
-            w.style.setProperty('--jx', (left ? 34 + rand() * 14 : -(34 + rand() * 14)).toFixed(1) + 'px');
-          } else {
-            t = (wi / words.length) * spread + rand() * 0.04;
-          }
-          w.style.setProperty('--th', t.toFixed(4));
-        }
-        if (wi < words.length - 1) w.appendChild(document.createTextNode(' '));
-        vis.appendChild(w);
-      });
-      el.appendChild(vis);
-    }
-
-    bands.forEach(function (b) {
-      var spread = b.el.dataset.spread ? parseFloat(b.el.dataset.spread) : 0.5;
-      [].slice.call(b.el.querySelectorAll('[data-split]')).forEach(function (line) {
-        splitLine(line, b.entrance, spread);
-      });
-    });
-
+    /* the mask needs its real path length before it can draw itself */
     var maskPath = document.getElementById('lotMaskPath');
     if (maskPath && maskPath.getTotalLength) {
-      try { maskPath.style.setProperty('--len', Math.ceil(maskPath.getTotalLength())); } catch (e) { /* default */ }
+      try { maskPath.style.setProperty('--len', Math.ceil(maskPath.getTotalLength())); }
+      catch (e) { /* default */ }
     }
 
-    /* The supplied clip glides at a constant rate and never slows, so a linear
-       scroll-to-time map would leave the page settling mid-movement. Hold a
-       constant rate to 70% of the scroll, then decelerate to a stop. Velocity is
-       matched at the join so the change of pace is not felt, only the arrival. */
-    function videoEase(p) {
-      var K = 0.70, S = 1.176, TK = K * S;
-      if (p <= K) return p * S;
-      var u = (p - K) / (1 - K);
-      return TK + (1 - TK) * (1 - (1 - u) * (1 - u));
-    }
-
-    var target = 0, shown = 0, rafId = null, lastTick = 0;
-    var heroOnScreen = true, scrubOn = false;
-    var loadK = 0, loadStart = 0, loadRamping = false;
-    var lastCue = -1, lastDraw = -1, lotDrawn = false;
-    var hudAlt = document.getElementById('hudAlt');
-    var hudState = document.getElementById('hudState');
-    var lastAlt = -1, lastState = '';
-
-    function heroProgress() {
-      var span = hero.offsetHeight - window.innerHeight;
-      if (span <= 0) return 0;
-      return clamp(-hero.getBoundingClientRect().top / span, 0, 1);
-    }
-
-    var seekBusy = false, pendingTime = null;
-    function requestSeek(t) {
-      if (!video.duration || isNaN(video.duration)) return;
-      if (seekBusy) { pendingTime = t; return; }
-      seekBusy = true;
-      try { video.currentTime = t; } catch (e) { seekBusy = false; }
-    }
-    video.addEventListener('seeked', function () {
-      seekBusy = false;
-      if (pendingTime !== null) { var t = pendingTime; pendingTime = null; requestSeek(t); }
-    });
-    video.addEventListener('error', function () {
-      seekBusy = false; pendingTime = null; failVideo();
-    });
-
-    function updateCaptions(p) {
-      for (var i = 0; i < bands.length; i++) {
-        var b = bands[i];
-        var f = Math.min(0.02, (b.b - b.a) / 3);
-        var inEase = (i === 0) ? 1 : smoothstep(p, b.a, b.a + f);
-        var outEase = (i === bands.length - 1) ? 1 : (1 - smoothstep(p, b.b - f, b.b));
-        var op = inEase * outEase;
-        var ramp = b.ramp || Math.min(0.025, (b.b - b.a) * 0.35);
-        var k = clamp((p - b.a) / ramp, 0, 1);
-        if (i === 0 && loadK > k) k = loadK;
-        if (Math.abs(op - b.op) > 0.004) { b.op = op; b.el.style.opacity = op.toFixed(3); }
-        if (Math.abs(k - b.k) > 0.008) {
-          b.k = k;
-          b.el.style.setProperty('--k', k.toFixed(3));
-          if (b.entrance === 'settle') {
-            b.el.style.setProperty('--ks', clamp((k - 0.66) * 4, 0, 1).toFixed(3));
-            b.el.style.setProperty('--kb', clamp((k - 0.78) * 5, 0, 1).toFixed(3));
-          }
-        }
-      }
-      var draw = smoothstep(p, 0.80, 0.985);
-      if (Math.abs(draw - lastDraw) > 0.006) {
-        lastDraw = draw;
-        if (lot) lot.style.setProperty('--draw', draw.toFixed(3));
-        var want = draw > 0.9;
-        if (lot && want !== lotDrawn) { lotDrawn = want; lot.classList.toggle('is-drawn', want); }
-      }
-      /* the readout: only ever written when a value actually changes */
-      if (hudAlt) {
-        var alt = Math.round((240 - 185 * p) / 5) * 5;
-        if (alt !== lastAlt) { lastAlt = alt; hudAlt.textContent = alt + ' m'; }
-      }
-      if (hudState) {
-        var st = p > 0.82 ? 'Boundary set' : p > 0.34 ? 'Descending' : 'Surveying';
-        if (st !== lastState) { lastState = st; hudState.textContent = st; }
-      }
-
-      if (cue) {
-        var cueOp = 1 - smoothstep(p, 0.01, 0.07);
-        if (Math.abs(cueOp - lastCue) > 0.02) { lastCue = cueOp; cue.style.setProperty('--cue', cueOp.toFixed(2)); }
-      }
-    }
-
-    function tick(now) {
-      var dt = Math.min(100, now - (lastTick || now));
-      lastTick = now;
-      if (loadRamping) {
-        loadK = clamp((now - loadStart) / 900, 0, 1);
-        if (loadK >= 1) loadRamping = false;
-      }
-      shown += (target - shown) * (1 - Math.pow(1 - 0.16, dt / 16.667));
-      if (Math.abs(target - shown) < 0.0005 && !loadRamping) {
-        shown = target; rafId = null; lastTick = 0;
-      } else {
-        rafId = requestAnimationFrame(tick);
-      }
-      if (video.duration) requestSeek(videoEase(shown) * video.duration);
-      updateCaptions(shown);
-    }
-
-    function onScroll() {
-      target = heroProgress();
-      if (rafId === null && heroOnScreen) { lastTick = 0; rafId = requestAnimationFrame(tick); }
-    }
-
-    if ('IntersectionObserver' in window) {
-      new IntersectionObserver(function (es) {
-        heroOnScreen = es[0].isIntersecting;
-        if (heroOnScreen && rafId === null && scrubOn) { lastTick = 0; rafId = requestAnimationFrame(tick); }
-      }, { rootMargin: '10px' }).observe(hero);
-    }
-
-    var heroInit = false, blobStarted = false;
-    function failVideo() {
-      if (ringEl) ringEl.classList.remove('is-on');
-      stage.classList.add('video-failed');
-    }
-    function startBlobFetch() {
-      if (blobStarted) return;
-      blobStarted = true;
-      loadHeroBlob()['catch'](failVideo);
-    }
-    function loadHeroBlob() {
-      if (!window.fetch || !window.AbortController) return Promise.reject(new Error('no fetch'));
-      var ctrl = new AbortController();
-      var watchdog = setTimeout(function () { ctrl.abort(); }, 20000);
-      if (ringEl) ringEl.classList.add('is-on');
-      var opts = { signal: ctrl.signal };
-      try { opts.priority = 'low'; } catch (e) { /* ignore */ }
-      return fetch(VIDEO_URL, opts).then(function (res) {
-        if (!res.ok) throw new Error('http ' + res.status);
-        var total = Number(res.headers.get('Content-Length')) || VIDEO_BYTES;
-        if (!res.body || !res.body.getReader) {
-          clearTimeout(watchdog);
-          return res.blob().then(attach);
-        }
-        var reader = res.body.getReader();
-        var chunks = [], got = 0, lastRing = 0;
-        return (function pump() {
-          return reader.read().then(function (r) {
-            if (r.done) { clearTimeout(watchdog); return attach(new Blob(chunks)); }
-            clearTimeout(watchdog);
-            watchdog = setTimeout(function () { ctrl.abort(); }, 20000);
-            chunks.push(r.value);
-            got += r.value.length;
-            var frac = Math.min(1, got / total);
-            var now = performance.now();
-            if (now - lastRing > 100 || frac === 1) {
-              lastRing = now;
-              if (ring) ring.style.setProperty('--ld', Math.round(126 * (1 - frac)));
-            }
-            return pump();
-          });
-        })();
-      });
-      function attach(blob) {
-        if (ring) ring.style.setProperty('--ld', 0);
-        if (ringEl) ringEl.classList.remove('is-on');
-        video.src = URL.createObjectURL(blob);
-        video.load();
-        video.addEventListener('canplay', function () {
-          requestSeek(videoEase(heroProgress()) * video.duration);
-          stage.classList.add('video-ready');
-        }, { once: true });
-      }
-    }
-    function initHeroOnce() {
-      if (heroInit) return;
-      heroInit = true;
+    function paintPoster() {
       poster.style.backgroundImage = "url('" + POSTER_URL + "')";
-      loadStart = performance.now();
-      loadRamping = true;
-      var img = new Image();
-      img.onload = startBlobFetch;
-      img.onerror = startBlobFetch;
-      img.src = POSTER_URL;
-      setTimeout(startBlobFetch, 4000);
     }
 
+    function playVideo() {
+      video.src = VIDEO_URL;
+      video.load();
+      var canplay = function () {
+        stage.classList.add('video-ready');
+        var p = video.play();
+        if (p && p.catch) p.catch(function () { /* autoplay was blocked, poster stays */ });
+      };
+      video.addEventListener('canplay', canplay, { once: true });
+      video.addEventListener('error', function () {
+        stage.classList.add('video-failed');
+      });
+    }
+
+    function drawBoundary() {
+      if (!lot || rmq.matches) {
+        if (lot) { lot.style.setProperty('--draw', '1'); lot.classList.add('is-drawn'); }
+        if (hudState) hudState.textContent = 'Boundary set';
+        return;
+      }
+      /* eased 0..1 over 2.4s, then the pegs land and the readout flips */
+      var start = 0;
+      function tick(now) {
+        if (!start) start = now;
+        var t = Math.min(1, (now - start) / 2400);
+        var e = t * t * (3 - 2 * t);
+        lot.style.setProperty('--draw', e.toFixed(3));
+        if (t < 1) requestAnimationFrame(tick);
+        else {
+          lot.classList.add('is-drawn');
+          if (hudState) hudState.textContent = 'Boundary set';
+        }
+      }
+      requestAnimationFrame(tick);
+    }
+
+    function start() {
+      paintPoster();
+      /* let the poster paint one frame first, so nothing pops in cold */
+      var img = new Image();
+      img.onload = playVideo;
+      img.onerror = playVideo;
+      img.src = POSTER_URL;
+      /* the boundary can start straight away, independent of the video */
+      setTimeout(drawBoundary, 900);
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', start);
+    } else {
+      start();
+    }
+
+    /* the compact layout swaps the video's crop anchor; keep the SVG in sync */
     function syncLotAnchor() {
       if (!lot) return;
       var compact = DEVICE_GATES.some(function (q) { return window.matchMedia(q).matches; });
       lot.setAttribute('preserveAspectRatio', compact ? 'xMaxYMid slice' : 'xMidYMid slice');
     }
-
-    function enableScrub() {
-      if (scrubOn) return;
-      scrubOn = true;
-      initHeroOnce();
-      window.addEventListener('scroll', onScroll, { passive: true });
-      bands.forEach(function (b) { b.op = -1; b.k = -1; });
-      lastCue = -1; lastDraw = -1;
-      if (lot) { lot.style.setProperty('--draw', '0'); lot.classList.remove('is-drawn'); lotDrawn = false; }
-      updateCaptions(heroProgress());
-      onScroll();
-    }
-    function disableScrub() {
-      if (!scrubOn) return;
-      scrubOn = false;
-      window.removeEventListener('scroll', onScroll);
-      if (rafId !== null) { cancelAnimationFrame(rafId); rafId = null; }
-    }
-    function applyHeroMode() {
-      syncLotAnchor();
-      if (rmq.matches) {
-        disableScrub();
-        if (lot) { lot.style.setProperty('--draw', '1'); lot.classList.add('is-drawn'); lotDrawn = true; }
-        bands.forEach(function (b) { b.el.style.setProperty('--k', '1'); b.k = 1; });
-      } else {
-        enableScrub();
-        bands.forEach(function (b) { b.op = -1; b.k = -1; });
-        lastCue = -1; lastDraw = -1;
-        updateCaptions(heroProgress());
-      }
-    }
-
-    DEVICE_GATES.concat([RM_GATE]).forEach(function (q) {
+    syncLotAnchor();
+    DEVICE_GATES.forEach(function (q) {
       var m = window.matchMedia(q);
-      if (m.addEventListener) m.addEventListener('change', applyHeroMode);
-      else if (m.addListener) m.addListener(applyHeroMode);
+      var fn = function () { syncLotAnchor(); };
+      if (m.addEventListener) m.addEventListener('change', fn);
+      else if (m.addListener) m.addListener(fn);
     });
 
-    window.addEventListener('resize', function () {
-      bands.forEach(function (b) { b.op = -1; b.k = -1; });
-      if (scrubOn) onScroll();
-    }, { passive: true });
+    /* pause the video off-screen to save the visitor's battery */
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver(function (es) {
+        if (es[0].isIntersecting) { if (video.paused && !rmq.matches) video.play().catch(function () {}); }
+        else if (!video.paused) video.pause();
+      }, { rootMargin: '10px' }).observe(hero);
+    }
 
-    /* whisper-level dust in the hero sky */
-    (function dust() {
-      var r = rng(20260820);
-      var frag = document.createDocumentFragment();
-      for (var i = 0; i < 14; i++) {
-        var d = document.createElement('span');
-        d.className = 'dust';
-        var size = (2 + r() * 3.4).toFixed(1);
-        d.style.width = d.style.height = size + 'px';
-        d.style.left = (r() * 100).toFixed(2) + '%';
-        d.style.top = (2 + r() * 38).toFixed(2) + '%';
-        d.style.setProperty('--dx', (-40 + r() * 80).toFixed(0) + 'px');
-        d.style.setProperty('--dy', (14 + r() * 50).toFixed(0) + 'px');
-        d.style.animation = 'dustdrift ' + (62 + r() * 44).toFixed(0) + 's ease-in-out ' +
-          (-(r() * 60)).toFixed(0) + 's infinite alternate';
-        frag.appendChild(d);
+    /* reduced motion: no video at all, just the ending frame */
+    function onMotionFlip() {
+      if (rmq.matches) {
+        video.pause();
+        stage.classList.add('rm-still');
+        if (lot) { lot.style.setProperty('--draw', '1'); lot.classList.add('is-drawn'); }
+        if (hudState) hudState.textContent = 'Boundary set';
+      } else {
+        stage.classList.remove('rm-still');
+        if (video.paused) video.play().catch(function () {});
       }
-      stage.appendChild(frag);
-    })();
-
-    pins.push(applyHeroMode);
-    unpins.push(applyHeroMode);
-    applyHeroMode();
+    }
+    if (rmq.addEventListener) rmq.addEventListener('change', onMotionFlip);
+    else if (rmq.addListener) rmq.addListener(onMotionFlip);
+    if (rmq.matches) onMotionFlip();
   })();
 
   /* =======================================================
-     PRESS AND HOLD TO SURVEY  (home page only)
+     CAROUSEL  (home page: recently sold, our team)
+
+     Every rail marked .js-carousel gets duplicated so the loop is seamless,
+     then a CSS keyframe scrolls it at a speed derived from its own length.
      ======================================================= */
-  (function surveyModule() {
-    var frame = document.querySelector('.survey__frame');
-    var hit = document.getElementById('surveyHit');
-    if (!frame || !hit) return;
+  (function carouselModule() {
+    var rails = [].slice.call(document.querySelectorAll('.js-carousel'));
+    if (!rails.length) return;
 
-    var sizes = document.getElementById('sizes');
-    var hudArea = document.getElementById('hudArea');
-    var hudZone = document.getElementById('hudZone');
-    var hudStatus = document.getElementById('hudStatus');
-    var hint = document.getElementById('surveyHint');
-    var maskPath = document.getElementById('surveyMaskPath');
+    rails.forEach(function (rail) {
+      var track = rail.querySelector('.carousel__track');
+      if (!track) return;
+      var originals = [].slice.call(track.children);
+      if (!originals.length) return;
 
-    if (maskPath && maskPath.getTotalLength) {
-      try { maskPath.style.setProperty('--len', Math.ceil(maskPath.getTotalLength())); } catch (e) { /* default */ }
-    }
+      /* clone once so the loop can wrap invisibly */
+      originals.forEach(function (n) { track.appendChild(n.cloneNode(true)); });
 
-    var hold = 0, holding = false, holdRaf = null, holdLast = 0, holdDone = false;
-    var HOLD_MS = 1500, RELEASE_MS = 700;
-    var lastHudAt = 0, lastArea = '', lastZone = '', lastStatus = '';
-
-    function writeHud(now) {
-      if (now - lastHudAt < 100) return;
-      lastHudAt = now;
-      var area = hold >= 1 ? '700m² to 10 acres' : Math.round(hold * 700) + 'm²';
-      var zone = hold > 0.5 ? 'RESIDENTIAL & FUTURE' : '–';
-      var stat = hold > 0.86 ? 'AVAILABLE NOW' : '–';
-      if (area !== lastArea) { lastArea = area; hudArea.textContent = area; }
-      if (zone !== lastZone) { lastZone = zone; hudZone.textContent = zone; }
-      if (stat !== lastStatus) { lastStatus = stat; hudStatus.textContent = stat; }
-    }
-    function holdTick(now) {
-      var dt = Math.min(100, now - (holdLast || now));
-      holdLast = now;
-      hold = clamp(hold + (holding ? dt / HOLD_MS : -dt / RELEASE_MS), 0, 1);
-      if (holdDone) hold = 1;
-      frame.style.setProperty('--hold', hold.toFixed(3));
-      writeHud(now);
-      if (hold >= 1 && !holdDone) {
-        holdDone = true;
-        frame.classList.add('is-done');
-        if (sizes) sizes.classList.add('is-lit');
-        if (hint) hint.textContent = 'Surveyed';
-      }
-      if ((holding && hold < 1) || (!holding && hold > 0)) {
-        holdRaf = requestAnimationFrame(holdTick);
-      } else { holdRaf = null; holdLast = 0; }
-    }
-    function startHold(e) {
-      if (e && e.cancelable) e.preventDefault();
-      holding = true;
-      if (holdRaf === null) { holdLast = 0; holdRaf = requestAnimationFrame(holdTick); }
-    }
-    function endHold() {
-      holding = false;
-      if (holdRaf === null && hold > 0) { holdLast = 0; holdRaf = requestAnimationFrame(holdTick); }
-    }
-    hit.addEventListener('pointerdown', startHold);
-    hit.addEventListener('pointerup', endHold);
-    hit.addEventListener('pointercancel', endHold);
-    hit.addEventListener('pointerleave', endHold);
-    hit.addEventListener('keydown', function (e) {
-      if (e.key === ' ' || e.key === 'Enter') { e.preventDefault(); startHold(); }
-    });
-    hit.addEventListener('keyup', function (e) { if (e.key === ' ' || e.key === 'Enter') endHold(); });
-    hit.addEventListener('blur', endHold);
-
-    pins.push(function () {
-      hold = 1; holdDone = true;
-      frame.style.setProperty('--hold', '1');
-      frame.classList.add('is-done');
-      if (sizes) sizes.classList.add('is-lit');
-      if (hint) hint.textContent = 'Surveyed';
-      lastArea = '700m² to 10 acres'; hudArea.textContent = lastArea;
-      lastZone = 'RESIDENTIAL & FUTURE'; hudZone.textContent = lastZone;
-      lastStatus = 'AVAILABLE NOW'; hudStatus.textContent = lastStatus;
-    });
-    unpins.push(function () {
-      hold = 0; holdDone = false; holding = false;
-      frame.style.setProperty('--hold', '0');
-      frame.classList.remove('is-done');
-      if (sizes) sizes.classList.remove('is-lit');
-      if (hint) hint.textContent = 'Press and hold';
-      lastArea = ''; lastZone = ''; lastStatus = '';
-      hudArea.textContent = '0'; hudZone.textContent = '–'; hudStatus.textContent = '–';
+      var measure = function () {
+        var half = 0;
+        for (var i = 0; i < originals.length; i++) {
+          half += track.children[i].getBoundingClientRect().width;
+          var cs = window.getComputedStyle(track);
+          half += parseFloat(cs.columnGap || cs.gap || 0);
+        }
+        rail.style.setProperty('--w', half + 'px');
+        /* pace: about 90 pixels per second, easy to read at a glance */
+        var seconds = Math.max(20, Math.round(half / 90));
+        rail.style.setProperty('--dur', seconds + 's');
+      };
+      /* wait for images so widths settle */
+      var imgs = [].slice.call(track.querySelectorAll('img'));
+      var pending = imgs.filter(function (i) { return !i.complete; }).length;
+      if (!pending) requestAnimationFrame(measure);
+      else imgs.forEach(function (i) {
+        if (i.complete) return;
+        i.addEventListener('load',  function () { if (--pending === 0) measure(); }, { once: true });
+        i.addEventListener('error', function () { if (--pending === 0) measure(); }, { once: true });
+      });
+      window.addEventListener('resize', function () { requestAnimationFrame(measure); }, { passive: true });
     });
   })();
 
@@ -563,7 +308,9 @@
     grid.parentNode.insertBefore(empty, grid.nextSibling);
 
     function apply() {
-      var s = suburb.value, t = type.value, st = status.value;
+      var s = suburb ? suburb.value : '';
+      var t = type ? type.value : '';
+      var st = status ? status.value : '';
       var shown = 0;
       cards.forEach(function (c) {
         var ok = (!s || c.dataset.suburb === s) &&

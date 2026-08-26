@@ -72,11 +72,12 @@ const page = (file, html) => made.push(write(file, html));
    HOME
    ======================================================= */
 {
-  const feature = sold.filter(p => p.gallery.length).slice(0, 3);
+  /* every sold listing rotates, so the carousel is representative of the agency's work */
+  const feature = sold;
   const body = `
-<!-- ============ FIND A BLOCK ============ -->
-<section class="sec sec--find">
-  <div class="wrap">${P.findBar(suburbs)}</div>
+<!-- ============ WHAT ARE YOU LOOKING FOR ============ -->
+<section class="sec sec--choose">
+  <div class="wrap">${P.chooseType()}</div>
 </section>
 
 <!-- ============ WHAT WE DO ============ -->
@@ -84,8 +85,8 @@ const page = (file, html) => made.push(write(file, html));
   <div class="wrap">
     ${P.sectionHead(
       'We help you find the land that will be yours',
-      'Residential and future residential sites across Adelaide, from small blocks at 700 square metres through to ten acre development projects.',
-      { kicker: 'Limited projects available' })}
+      'Residential and future residential sites across Adelaide, from 250 square metres to 100 acre development projects.',
+      { kicker: 'Limited projects available', centre: true })}
     <ul class="badges reveal">
       <li class="badge">
         <span class="badge__mark" aria-hidden="true"><svg viewBox="0 0 40 40"><path d="M7 27 L20 15 L33 27" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M11 27 v6 h18 v-6" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
@@ -100,16 +101,16 @@ const page = (file, html) => made.push(write(file, html));
         <h3>Suitable for developers and investors</h3>
       </li>
     </ul>
-    <p class="sec__more"><a class="btn" href="development-opportunities.html">See land and development sites</a></p>
+    <p class="sec__more sec__more--centre"><a class="btn" href="development-opportunities.html">See land and development sites</a></p>
   </div>
 </section>
 
 <!-- ============ HOW IT WORKS ============ -->
 <section class="sec sec--steps sec--tint" id="how">
   <div class="wrap">
-    ${P.sectionHead('How buying a site with us actually goes', 'Three steps, and you can stop after any of them. Nothing here costs you anything until you decide to buy.', { kicker: 'How it works' })}
+    ${P.sectionHead('How our service works', 'Three steps, and you can stop after any of them. Nothing here costs you anything until you decide to buy.', { kicker: 'How it works', centre: true })}
     ${P.steps([
-      ['Tell us what you want to build.',
+      ['Tell us what you want to do (build, develop or invest).',
        'One call. What you have in mind, roughly what you can spend, and whether you have done it before. If we have nothing that fits we will say so on that call.'],
       ['We find sites that fit, and check them properly.',
        'Titled or untitled, what it will cost to make ready, what council has earmarked around it. We send you the numbers rather than a brochure.'],
@@ -119,16 +120,31 @@ const page = (file, html) => made.push(write(file, html));
   </div>
 </section>
 
-<!-- ============ RECENT RESULTS ============ -->
+<!-- ============ RECENTLY SOLD, AUTO-ROTATING ============ -->
 <section class="sec sec--listings">
   <div class="wrap">
-    ${P.sectionHead('Recently sold', 'A sample of what we have moved lately. Every one of these was handled by the people whose numbers are on this page.')}
-    ${P.grid(feature.map(P.propertyCard))}
-    <p class="sec__more"><a class="btn btn--ghost" href="properties-sold.html">See everything we have sold</a></p>
+    ${P.sectionHead('Recently sold', 'A sample of what we have moved lately. Every one of these was handled by the people whose numbers are on this page.', { centre: true })}
+    <div class="carousel js-carousel" data-min="3" aria-live="off">
+      <div class="carousel__track">
+        ${feature.map(P.propertyCard).join('\n')}
+      </div>
+    </div>
+    <p class="sec__more sec__more--centre"><a class="btn btn--ghost" href="properties-sold.html">See everything we have sold</a></p>
   </div>
 </section>
 
-${surveySection()}
+<!-- ============ OUR TEAM, AUTO-ROTATING ============ -->
+<section class="sec sec--team sec--tint" id="team">
+  <div class="wrap">
+    ${P.sectionHead('Our team', 'A small Adelaide agency where you speak to whichever of us can help.', { kicker: 'The people you deal with', centre: true })}
+    <div class="carousel js-carousel js-carousel--agents" data-min="3">
+      <div class="carousel__track">
+        ${P.AGENTS.map(P.agentCard).join('\n')}
+      </div>
+    </div>
+    <p class="sec__more sec__more--centre"><a class="btn btn--ghost" href="agents.html">Meet the team</a></p>
+  </div>
+</section>
 
 <!-- ============ PROOF STRIP ============ -->
 <section class="sec sec--proof">
@@ -142,7 +158,7 @@ ${P.enquire()}
     P.head({
       file: 'index.html',
       title: 'SA Realtors | Land and development sites across Adelaide',
-      desc: 'Residential and future residential land across Adelaide, from 700 square metres to ten acre development sites. SA Realtors, Payneham. RLA 344822.',
+      desc: 'Residential and future residential land across Adelaide, from 250 square metres to 100 acre development sites. SA Realtors, Payneham. RLA 344822.',
       bodyClass: 'has-hero'
     }) + '\n' + HERO + '\n' + body + P.foot());
 }
@@ -201,10 +217,6 @@ function listingPage(o) {
   const filters = o.filters ? `
     <form class="filters reveal" id="filters">
       <div class="filters__f">
-        <label for="f-suburb">Suburb</label>
-        <select id="f-suburb"><option value="">All suburbs</option>${suburbs.map(s => `<option>${P.esc(s)}</option>`).join('')}</select>
-      </div>
-      <div class="filters__f">
         <label for="f-type">Type</label>
         <select id="f-type"><option value="">All types</option><option value="residential">Residential</option><option value="land">Land and development</option></select>
       </div>
@@ -239,8 +251,8 @@ page('properties.html', listingPage({
   desc: 'Every property SA Realtors has handled across Adelaide, from residential homes to ten acre development sites.',
   crumbs: [{ label: 'Home', href: 'index.html' }, { label: 'Properties' }],
   kicker: 'Our listings',
-  h1: 'Every property we have handled',
-  lede: 'Filter by suburb, type or status. If nothing here fits, tell us what you are after and we will call you when it lands.',
+  h1: 'Find your property',
+  lede: 'Filter by type or status. If nothing here fits, tell us what you are after and we will call you when it lands.',
   items: props,
   filters: true
 }));
@@ -277,6 +289,20 @@ page('properties-sold.html', listingPage({
   h1: 'What we have sold',
   lede: `${sold.length} properties, including ${acres} acres of development land through Adelaide's northern corridor.`,
   items: sold
+}));
+
+page('properties-for-rent.html', listingPage({
+  file: 'properties-for-rent.html',
+  title: 'For rent | SA Realtors',
+  desc: 'Properties currently for rent with SA Realtors in Adelaide.',
+  crumbs: [{ label: 'Home', href: 'index.html' }, { label: 'Properties', href: 'properties.html' }, { label: 'For rent' }],
+  kicker: 'To lease',
+  h1: 'For rent',
+  lede: 'What is available to lease right now.',
+  items: rentals.filter(p => p.state === 'For Rent'),
+  emptyTitle: 'No rentals available this minute.',
+  emptyBody: 'Nothing available to lease right now. Tell us what you are looking for and we will call you when a fit comes up.',
+  emptyCta: 'Tell us what you are looking for'
 }));
 
 /* =======================================================
@@ -383,27 +409,6 @@ page('development-opportunities.html',
   </div>
 </section>
 
-<section class="sec sec--questions">
-  <div class="wrap questions">
-    ${P.sectionHead('What usually stops people', 'These are the four we hear most. Here is what we actually say.', { kicker: 'Straight answers' })}
-    <div class="qlist">
-      ${[
-    ['The advertised price is never the final price.',
-      'True, and it is usually site costs that do it. Earthworks, service connections, fencing, driveways and landscaping sit outside most advertised prices. We tell you what a site is likely to cost to make ready before you commit, not after.'],
-    ['Is it titled or untitled?',
-      'We tell you on every site, in writing. It matters, because you cannot settle your loan or start building on untitled land, and titles slip on weather and council timing. If a site is untitled we tell you the expected date and what happens if it moves.'],
-    ['Is Adelaide still a buy after the boom?',
-      'Honestly, the easy money has been made. What is left in the north is growth backed by infrastructure that is already built and rental demand that has stayed tight. That is a different case from a boom, and it is the one we will make to you with real numbers on a real site.'],
-    ['How do I know the site actually stacks up?',
-      'Ask us for the numbers on any site and we will send them. If a site does not work for what you want to build, we will tell you that too. We would rather lose one sale than sell you the wrong block.']
-  ].map(q => `<details class="q reveal" name="q">
-        <summary><span class="q__mark" aria-hidden="true"></span>${P.esc(q[0])}</summary>
-        <div class="q__a"><p>${P.esc(q[1])}</p></div>
-      </details>`).join('\n')}
-    </div>
-  </div>
-</section>
-
 ${P.enquire({
     title: 'Tell us what you are looking to build.',
     lede: 'Fill in the form and our team will contact you shortly to discuss available opportunities.'
@@ -422,7 +427,8 @@ page('agents.html',
     crumbs: [{ label: 'Home', href: 'index.html' }, { label: 'The team' }],
     kicker: 'A name you can trust',
     title: 'The people you will actually deal with',
-    lede: 'We are a small Adelaide agency, so you get one of us on the phone rather than a queue.'
+    lede: 'We are a small Adelaide agency, so you get one of us on the phone rather than a queue.',
+    centre: true
   }) +
   `<section class="sec sec--team">
   <div class="wrap"><div class="agrid">${P.AGENTS.map(P.agentCard).join('\n')}</div></div>
@@ -471,32 +477,48 @@ page('about.html',
     crumbs: [{ label: 'Home', href: 'index.html' }, { label: 'About' }],
     kicker: 'A name you can trust',
     title: 'A small Adelaide agency that knows one patch properly',
-    lede: 'We work land and development sites through Adelaide’s northern corridor, and residential property across the suburbs around it.'
+    lede: 'We work land and development sites through Adelaide’s northern corridor, and residential property across the suburbs around it.',
+    centre: true
   }) +
   `<section class="sec sec--prose">
   <div class="wrap prose reveal">
-    <p>SA Realtors is run out of an office on Payneham Road, and there are three of us. That is the whole thing. When you call, you get Nayan, Dishant or Dinesh, not a call centre and not a junior reading from a script.</p>
-    <h2>What we actually do</h2>
-    <p>Most of our work is land. Development sites, future residential blocks, acreage with subdivision potential, and the questions that come with them: is it titled, what will it cost to make ready, what can you actually build on it. We have sold ${acres} acres across ${suburbs.length} suburbs, mostly through Munno Para, Angle Vale, Kudla and Evanston Gardens.</p>
-    <p>Alongside that we sell and lease houses through Salisbury, Elizabeth and the northern suburbs, and we act as buyers agents for people who would rather have somebody on their side of the table.</p>
-    <h2>How we work</h2>
-    <p>We tell you the things that cost you money before you commit, not after. Site costs, service connections, whether a block is titled and what happens if the title date slips. None of that is exciting, and all of it decides whether a project works.</p>
-    <p>If a site does not stack up for what you want to build, we say so. We would rather lose a sale than put somebody into the wrong block, because in a city this size that gets around.</p>
-    <h2>The details</h2>
-    <p>SA Realtors, ${P.AGENCY.street}, ${P.AGENCY.city}. Licensed in South Australia, ${P.AGENCY.rla}. Reach us on <a href="tel:${P.AGENCY.phoneHref}">${P.AGENCY.phone}</a> or <a href="mailto:${P.AGENCY.email}">${P.AGENCY.email}</a>.</p>
+    <h2>What we do</h2>
+    <p>At SA Realtors, we specialise in property where experience and local knowledge make a real difference.</p>
+
+    <h3>Development and investment property</h3>
+    <p>A large part of our work is focused on land, development sites, future residential blocks, acreage with subdivision potential and off-market opportunities.</p>
+    <p>We help clients understand the important questions before they commit: Is the land titled? What will it cost to make the site ready? What can realistically be built? Are there service connections or other site costs to consider?</p>
+    <p>We have sold ${acres} acres across ${suburbs.length} suburbs, with much of our experience across Munno Para, Angle Vale, Kudla and Evanston Gardens.</p>
+
+    <h3>Buyers agent</h3>
+    <p>Looking for the right development site, investment property or off-market opportunity?</p>
+    <p>Our buyers agent service puts someone on your side of the transaction. We can help identify opportunities, assess the property and negotiate with the seller, particularly where the right property may not be openly advertised.</p>
+    <p>Our approach is simple: if the property doesn’t make sense for what you want to achieve, we’ll tell you.</p>
+
+    <h3>Property management</h3>
+    <p>We look after investment properties so owners don’t have to.</p>
+    <p>Our property management service is focused on keeping your investment well managed, your tenants supported and the day-to-day responsibilities taken care of.</p>
+    <p>Our management fee is 5.5% including GST<a href="#tc" class="prose__note">*</a>.</p>
+
+    <h3>Selling your property</h3>
+    <p>When it comes time to sell, our dedicated sales agent Dinesh Sharma specialises in property sales and works closely with vendors to achieve the best possible outcome.</p>
+    <p>Whether you’re selling a home, investment property or development opportunity, we bring local market knowledge and a practical approach to the process.</p>
+
+    <h3>Why SA Realtors?</h3>
+    <p>We believe good property advice starts with being upfront.</p>
+    <p>We tell you about the things that can cost you money before you commit, not after, from site costs and service connections to title timing and development considerations.</p>
+    <p>If a property isn’t right for your plans, we’ll say so. We’d rather lose a sale than put someone into the wrong property.</p>
+
+    <h3>The details</h3>
+    <p>${P.AGENCY.name}<br>${P.AGENCY.street}, ${P.AGENCY.city}<br>Licensed in South Australia &middot; ${P.AGENCY.rla}<br><a href="tel:${P.AGENCY.phoneHref}">${P.AGENCY.phone}</a> &middot; <a href="mailto:${P.AGENCY.email}">${P.AGENCY.email}</a></p>
+
+    <p class="prose__tc" id="tc">*Terms and conditions apply.</p>
   </div>
 </section>
 
-<section class="sec sec--north">
+<section class="sec sec--team sec--tint">
   <div class="wrap">
-    ${P.sectionHead('What we have done so far', 'Numbers from our own listings, not the market.')}
-    ${P.statBlock(STATS)}
-  </div>
-</section>
-
-<section class="sec sec--team">
-  <div class="wrap">
-    ${P.sectionHead('The three of us', '')}
+    ${P.sectionHead('The team', '', { centre: true })}
     <div class="agrid">${P.AGENTS.map(P.agentCard).join('\n')}</div>
   </div>
 </section>
@@ -516,24 +538,30 @@ page('contact.html',
     crumbs: [{ label: 'Home', href: 'index.html' }, { label: 'Contact' }],
     kicker: 'Get in touch',
     title: 'Talk to us',
-    lede: 'Call whichever of us suits, or send the form and we will come back to you.'
+    lede: 'Call whichever of us suits, or send the form and we will come back to you.',
+    centre: true
   }) +
   `<section class="sec sec--contact">
   <div class="wrap contact">
-    <div class="contact__card reveal">
-      <h2>The office</h2>
-      <p>${P.AGENCY.street}<br>${P.AGENCY.city}</p>
-      <p><a class="contact__big" href="tel:${P.AGENCY.phoneHref}">${P.AGENCY.phone}</a></p>
-      <p><a href="mailto:${P.AGENCY.email}">${P.AGENCY.email}</a></p>
-      <p class="contact__rla">${P.AGENCY.rla}</p>
-    </div>
-    ${P.AGENTS.map(a => `<div class="contact__card reveal">
-      <h2>${P.esc(a.name)}</h2>
-      <p class="contact__role">${P.esc(a.role)}</p>
-      <p>${P.esc(a.focus)}</p>
-      <p><a class="contact__big" href="tel:${a.href}">${P.esc(a.phone)}</a></p>
-      <p><a href="agent-${a.slug}.html">Read more</a></p>
+    ${P.AGENTS.map(a => `<div class="contact__card contact__card--agent reveal">
+      <div class="contact__pic"><img src="assets/${a.img}" alt="${P.esc(a.name)}" width="380" height="475" loading="lazy" decoding="async"></div>
+      <div class="contact__body">
+        <h2>${P.esc(a.name)}</h2>
+        <p class="contact__role">${P.esc(a.role)}</p>
+        <p><a class="contact__big" href="tel:${a.href}">${P.esc(a.phone)}</a></p>
+        <p><a href="agent-${a.slug}.html">Read more</a></p>
+      </div>
     </div>`).join('\n')}
+  </div>
+</section>
+
+<section class="sec sec--office sec--tint">
+  <div class="wrap office">
+    <h2>The office</h2>
+    <p>${P.AGENCY.street}<br>${P.AGENCY.city}</p>
+    <p><a class="contact__big" href="tel:${P.AGENCY.phoneHref}">${P.AGENCY.phone}</a></p>
+    <p><a href="mailto:${P.AGENCY.email}">${P.AGENCY.email}</a></p>
+    <p class="contact__rla">${P.AGENCY.rla}</p>
   </div>
 </section>
 
