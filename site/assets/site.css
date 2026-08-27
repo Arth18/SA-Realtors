@@ -1445,10 +1445,11 @@ body:not(.has-hero) #main{padding-top:84px}
     margin:0;border-radius:0;max-width:none;width:100%;
     border-top:3px solid var(--accent-bright);
     box-shadow:0 -26px 60px -34px rgba(16,28,61,.55);
-    padding:clamp(28px,7vw,50px) var(--gut) clamp(32px,8vw,56px);
+    padding:clamp(22px,5vw,36px) var(--gut) clamp(22px,5vw,32px);
   }
-  .herotext .hline--h1{font-size:clamp(34px,9vw,54px);max-width:14ch}
+  .herotext .hline--h1{font-size:clamp(30px,8vw,46px);max-width:14ch}
   .herotext .settle__cta .btn{width:100%}
+  .sec--offer{padding-top:clamp(28px,5vh,48px)}
 }
 
 /* --- what are you looking for --- */
