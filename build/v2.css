@@ -7,7 +7,7 @@
 
 /* --- centred variant of the pageHead --- */
 .phead--centre{text-align:center}
-.phead--centre .phead__row{grid-template-columns:1fr;justify-items:center}
+.phead--centre .phead__row{grid-template-columns:1fr;justify-items:center;gap:12px}
 .phead--centre .crumb{justify-content:center}
 .phead--centre .kicker{justify-content:center}
 .phead--centre .h1,
