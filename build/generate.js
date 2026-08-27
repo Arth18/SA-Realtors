@@ -381,7 +381,7 @@ page('development-opportunities.html',
   }) +
   `<section class="sec sec--offers">
   <div class="wrap">
-    <p class="lede" style="text-align: center;">Sites we have handled</p>
+    <p class="lede" style="text-align: center; margin: 0 auto 3em;">Sites we have handled</p>
     <div class="orows">${land.map(P.offerRow).join('\n')}</div>
   </div>
 </section>` + P.foot());
