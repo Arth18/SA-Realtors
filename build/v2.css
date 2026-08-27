@@ -59,8 +59,8 @@
   box-shadow:0 26px 60px -40px rgba(16,28,61,.55);
   max-width:min(56vw,600px);
 }
-.herotext .settle__body{padding:0}
-.herotext .kicker{margin-bottom:14px}
+.herotext .settle__body{padding:0;display:flex;flex-direction:column;align-items:center;text-align:center}
+.herotext .kicker{margin-bottom:14px;justify-content:center}
 .herotext .hline--h1{
   font:800 clamp(38px,5.4vw,72px)/1 var(--display);
   letter-spacing:-.028em;color:var(--ink);margin:0 0 .55em;max-width:11ch;
