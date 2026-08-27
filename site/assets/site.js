@@ -381,7 +381,7 @@
       if (bad) { bad.focus(); return; }
       var g = function (id) { var el = document.getElementById(id); return el ? el.value.trim() : ''; };
       var subject = 'Enquiry from ' + g('f-name') + ' via ' + document.title.split('|')[0].trim();
-      var key = form.getAttribute('data-access-key') || 'YOUR_ACCESS_KEY_HERE';
+      var key = form.getAttribute('data-access-key') || '29861cb5-b2cc-4ec3-9f63-fb95c92bc479';
       var submitBtn = form.querySelector('button[type="submit"]');
       if (submitBtn) {
         submitBtn.disabled = true;
