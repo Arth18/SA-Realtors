@@ -1252,7 +1252,7 @@ body:not(.has-hero) #main{padding-top:84px}
   display:block;margin-bottom:14px;
   font:500 12px/1 var(--mono);letter-spacing:.2em;color:var(--accent-ink);
 }
-.step h3{font-size:clamp(18px,1.5vw,24px);letter-spacing:-.016em;line-height:1.22;margin-bottom:.55em;max-width:20ch}
+.step h3{font-size:clamp(18px,1.5vw,24px);letter-spacing:-.016em;line-height:1.22;margin-bottom:.55em;max-width:100%;text-align:center}
 .step p{margin:0;color:var(--ink-soft);font-size:15.5px;max-width:40ch}
 /* the rule above each step draws itself as the row arrives */
 .step::before{

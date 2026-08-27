@@ -452,7 +452,7 @@ page('about.html',
     centre: true
   }) +
   `<section class="sec sec--prose">
-  <div class="wrap prose reveal">
+  <div class="wrap prose reveal" style="text-align: center;">
     <h2>What we do</h2>
     <p>At SA Realtors, we specialise in property where experience and local knowledge make a real difference.</p>
 
@@ -527,9 +527,7 @@ page('contact.html',
     <p><a href="mailto:${P.AGENCY.email}">${P.AGENCY.email}</a></p>
     <p class="contact__rla">${P.AGENCY.rla}</p>
   </div>
-</section>
-
-${P.enquire({ title: 'Send us a message.', lede: 'Tell us what you need and we will get back to you.' })}` + P.foot());
+</section>` + P.foot());
 
 /* ---------- report ---------- */
 console.log('generated ' + made.length + ' pages into site/\n');
