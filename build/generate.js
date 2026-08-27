@@ -381,7 +381,7 @@ page('development-opportunities.html',
   }) +
   `<section class="sec sec--offers">
   <div class="wrap">
-    ${P.sectionHead('Sites we have handled', '', { titleClass: 'font-body-heading', asParagraph: true })}
+    <p>${P.sectionHead('Sites we have handled', '', { titleClass: 'font-body-heading', asParagraph: true })}</p>
     <div class="orows">${land.map(P.offerRow).join('\n')}</div>
   </div>
 </section>` + P.foot());
