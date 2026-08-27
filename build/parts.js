@@ -195,7 +195,7 @@ function sectionHead(title, para, opts) {
   return `<div class="${cls}">
   ${o.kicker ? `<p class="kicker"><span class="pegmark" aria-hidden="true"></span>${esc(o.kicker)}</p>` : ''}
   <div class="shead__row">
-    <h2${o.light ? ' class="on-dark"' : ''}${o.titleClass ? ` class="${esc(o.titleClass)}"` : ''}>${esc(title)}</h2>
+    <${o.asParagraph ? 'p' : 'h2'}${o.light ? ' class="on-dark"' : ''}${o.titleClass ? ` class="${esc(o.titleClass)}"` : ''}>${esc(title)}</${o.asParagraph ? 'p' : 'h2'}>
     ${para ? `<p class="shead__note${o.light ? ' on-dark-soft' : ''}">${esc(para)}</p>` : ''}
   </div>
 </div>`;
